@@ -1,9 +1,13 @@
 package persistence;
 
+import java.util.Optional;
+
+import entity.Transaction;
+
 public interface TransactionDAO {
 
-	void pushBill();
+	boolean pushBill(Transaction newTransaction);
 
-	void fetchBill();
+	Optional<Transaction> fetchBill(int billID);
 
 }

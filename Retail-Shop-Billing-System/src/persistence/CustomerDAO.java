@@ -1,11 +1,13 @@
 package persistence;
 
+import entity.Customer;
+
 public interface CustomerDAO {
 
-	boolean login();
+	boolean login(int customerID, String password);
 
-	boolean register();
+	boolean register(Customer newCustomer);
 
-	boolean updatePassword();
+	boolean updatePassword(int customerID, String oldPassword, String newPassword);
 
 }

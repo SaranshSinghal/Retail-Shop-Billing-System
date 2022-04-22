@@ -1,13 +1,17 @@
 package persistence;
 
+import java.util.Optional;
+
+import entity.Product;
+
 public interface ProductDAO {
 
-	void searchProduct();
+	Optional<Product> searchProduct(int productID);
 
-	void deleteProduct();
+	boolean deleteProduct(int productID);
 
-	void addProduct();
+	boolean addProduct(Product product);
 
-	void updateQuantity();
+	boolean updateQuantity(int productID, int quantity);
 
 }
