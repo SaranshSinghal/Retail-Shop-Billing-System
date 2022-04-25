@@ -18,15 +18,15 @@ public class ProductDAOImpl implements ProductDAO {
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("SELECT * FROM PRODUCTS WHERE PRODUCTID=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM PRODUCT WHERE P_ID=?");
 			preparedStatement.setInt(1, productID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				int productid = resultSet.getInt("productid");
-				String name = resultSet.getString("name");
-				String category = resultSet.getString("category");
-				double price = resultSet.getDouble("price");
-				int quantity = resultSet.getInt("quantity");
+				int productid = resultSet.getInt("P_Id");
+				String name = resultSet.getString("ProductName");
+				String category = resultSet.getString("Category");
+				double price = resultSet.getDouble("Price");
+				int quantity = resultSet.getInt("Quantity");
 				product = new Product(productid, name, category, price, quantity);
 			}
 		} catch (ClassNotFoundException e) {
@@ -45,7 +45,7 @@ public class ProductDAOImpl implements ProductDAO {
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("DELETE FROM PRODUCTS WHERE PRODUCTID=?");
+			preparedStatement = connection.prepareStatement("DELETE FROM PRODUCT WHERE P_ID=?");
 			preparedStatement.setInt(1, productID);
 			rows = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -66,7 +66,7 @@ public class ProductDAOImpl implements ProductDAO {
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("INSERT INTO PRODUCTS VALUES(?,?,?,?,?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO PRODUCT VALUES(?,?,?,?,?)");
 			preparedStatement.setInt(1, product.getId());
 			preparedStatement.setString(1, product.getName());
 			preparedStatement.setString(3, product.getCategory());
@@ -91,7 +91,7 @@ public class ProductDAOImpl implements ProductDAO {
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("UPDATE PRODUCTS SET QUANTITY=? WHERE PRODUCTID=?");
+			preparedStatement = connection.prepareStatement("UPDATE PRODUCT SET QUANTITY=? WHERE P_ID=?");
 			preparedStatement.setInt(1, quantity);
 			preparedStatement.setInt(2, productID);
 			rows = preparedStatement.executeUpdate();
