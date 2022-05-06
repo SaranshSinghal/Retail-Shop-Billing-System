@@ -18,21 +18,28 @@ CREATE TABLE Customer(
 CREATE TABLE Bill(
     Bill_Id int primary key auto_increment,
     C_Id int,
-    AllProductsId varchar(100),
-    NumberOfProducts int NOT NULL ,
     Time_Stamp datetime,
     TotalAmount double,
     foreign key (C_ID) references Customer(C_Id));
     
+CREATE TABLE Transaction(
+    T_Id int primary key auto_increment,
+    Bill_Id int,
+    P_Id int,
+    Quantity int,
+    foreign key (Bill_ID) references Bill(Bill_Id),
+    foreign key (P_ID) references Product(P_Id));
+    
     CREATE TABLE Cart(
     Cart_Id int primary key auto_increment,
     C_Id int,
-    NumberOfProducts int,
-    AllProducts varchar(100),
+    P_Id int,
+    Quantity int,
     TotalAmount double,
-    foreign key (C_ID) references Customer(C_Id));
+    foreign key (C_ID) references Customer(C_Id),
+    foreign key (P_ID) references Product(P_Id));
     
-    drop table Bill;
+    drop table Cart;
 
 insert into Product
 values(101,"IKIGAI","book",499,1),
@@ -46,6 +53,15 @@ insert into Customer
 values(1,"Shivam","12345","9960330617","Rohini,Delhi"),
 (2,"Saransh","abcde","9811357600","Krishna Nagar, Delhi");
 
+insert into Cart
+values(default,1,101,2,998),
+(default,1,102,2,1198),
+(default,2,201,1,200);
+
 select * from Product;
 select * from Customer;
+select * from Cart;
+
+delete from cart;
+set sql_safe_updates = 0;
 
