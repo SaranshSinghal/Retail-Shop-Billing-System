@@ -11,12 +11,12 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @ToString
-public class Transaction {
+public class Bill {
 
-	int customerID;
-	int transacID;
-	int noOfProducts;
+	int billID;
 	LocalDateTime timestamp;
-	double billAmount;
+	double totalAmount;
 
 }
+// pid
+// quant

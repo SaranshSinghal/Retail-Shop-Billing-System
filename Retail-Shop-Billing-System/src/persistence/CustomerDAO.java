@@ -4,10 +4,12 @@ import entity.Customer;
 
 public interface CustomerDAO {
 
-	boolean login(int customerID, String password);
+	Customer fetchCustomerDetails(int customerID);
 
 	boolean register(Customer newCustomer);
 
-	boolean updatePassword(int customerID, String oldPassword, String newPassword);
+	boolean updateDetails(Customer customer);
+
+	boolean getAllCustomers(); // no password shown.
 
 }

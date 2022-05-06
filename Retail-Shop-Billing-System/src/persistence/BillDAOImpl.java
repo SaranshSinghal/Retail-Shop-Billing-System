@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import entity.Transaction;
+import entity.Bill;
 
-public class TransactionDaoImpl implements TransactionDAO {
+public class BillDAOImpl implements BillDAO {
 
 	@Override
-	public boolean pushBill(Transaction newTransaction) {
+	public boolean pushBill(Bill newTransaction) {
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
@@ -36,8 +36,8 @@ public class TransactionDaoImpl implements TransactionDAO {
 	}
 
 	@Override
-	public Optional<Transaction> fetchBill(int billID) {
-		Transaction transaction = null;
+	public Optional<Bill> fetchBill(int billID) {
+		Bill transaction = null;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
@@ -51,14 +51,14 @@ public class TransactionDaoImpl implements TransactionDAO {
 				int noOfProducts = resultSet.getInt("NumberOfProducts");
 				LocalDateTime localDateTime = LocalDateTime.parse(resultSet.getObject("Time_Stamp").toString());
 				double billAmount = resultSet.getDouble("TotalAmount");
-				transaction = new Transaction(customerID, transactionID, noOfProducts, localDateTime, billAmount);
+				transaction = new Bill(customerID, transactionID, noOfProducts, localDateTime, billAmount);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Optional<Transaction> optionalTransaction = Optional.ofNullable(transaction);
+		Optional<Bill> optionalTransaction = Optional.ofNullable(transaction);
 		return optionalTransaction;
 	}
 

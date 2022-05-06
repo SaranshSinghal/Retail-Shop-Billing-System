@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class Product {
 
-	int id;
+	int productID;
 	String name;
 	String category;
 	double price;

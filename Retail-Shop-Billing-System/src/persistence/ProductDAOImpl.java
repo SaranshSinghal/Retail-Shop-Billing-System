@@ -67,7 +67,7 @@ public class ProductDAOImpl implements ProductDAO {
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("INSERT INTO PRODUCT VALUES(?,?,?,?,?)");
-			preparedStatement.setInt(1, product.getId());
+			preparedStatement.setInt(1, product.getProductID());
 			preparedStatement.setString(1, product.getName());
 			preparedStatement.setString(3, product.getCategory());
 			preparedStatement.setDouble(4, product.getPrice());
