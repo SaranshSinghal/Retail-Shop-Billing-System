@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import entity.Customer;
 
-public class CustomerDaoImpl implements CustomerDAO {
+public class CustomerDAOImpl implements CustomerDAO {
 
 	@Override
 	public Optional<Customer> fetchCustomerDetails(int customerID) {
@@ -42,7 +42,7 @@ public class CustomerDaoImpl implements CustomerDAO {
 	}
 
 	@Override
-	public boolean register(Customer newCustomer) {
+	public boolean registerNewCustomer(Customer newCustomer) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
@@ -67,7 +67,7 @@ public class CustomerDaoImpl implements CustomerDAO {
 	}
 
 	@Override
-	public boolean updateDetails(Customer customer) {
+	public boolean updateCustomerDetails(Customer customer) {
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {

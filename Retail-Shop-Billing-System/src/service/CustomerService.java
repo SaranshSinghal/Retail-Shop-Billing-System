@@ -1,9 +1,17 @@
 package service;
 
+import java.util.List;
+
+import entity.Customer;
+
 public interface CustomerService {
 
-	boolean login(int customerID, String password);
+	boolean loginCustomer(int customerID, String password);
+
+	boolean registerCustomer(Customer customer);
 
 	boolean updatePasssword(int customerID, String oldPassword, String newPassword);
+
+	List<Customer> getAllCustomers();
 
 }

@@ -9,9 +9,9 @@ public interface CustomerDAO {
 
 	Optional<Customer> fetchCustomerDetails(int customerID);
 
-	boolean register(Customer newCustomer);
+	boolean registerNewCustomer(Customer newCustomer);
 
-	boolean updateDetails(Customer customer);
+	boolean updateCustomerDetails(Customer customer);
 
 	List<Customer> getAllCustomers(); // no password shown.
 
