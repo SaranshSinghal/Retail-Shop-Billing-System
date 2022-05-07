@@ -1,67 +1,76 @@
-create database RetailShop;
-use RetailShop;
+CREATE DATABASE RetailShop;
+USE RetailShop;
 
-create table Product(
-P_Id int primary key,
-ProductName varchar(25) not null,
-Category varchar(20) not null,
-Price double not null,
-Quantity int default 0);
+CREATE TABLE Product (
+    P_Id INT PRIMARY KEY,
+    ProductName VARCHAR(25) NOT NULL,
+    Category VARCHAR(20) NOT NULL,
+    Price DOUBLE NOT NULL,
+    Quantity INT DEFAULT 0
+);
 
-CREATE TABLE Customer(
-    C_Id int primary key auto_increment,
-    C_Name varchar(30) NOT NULL ,
-    C_Password varchar(20) not null,
-    PhoneNumber varchar(15) not null,
-    Address varchar(100));
+CREATE TABLE Customer (
+    C_Id INT PRIMARY KEY AUTO_INCREMENT,
+    C_Name VARCHAR(30) NOT NULL,
+    C_Password VARCHAR(20) NOT NULL,
+    PhoneNumber VARCHAR(15) NOT NULL,
+    Address VARCHAR(100)
+);
 
-CREATE TABLE Bill(
-    Bill_Id int primary key auto_increment,
-    C_Id int,
-    Time_Stamp datetime,
-    TotalAmount double,
-    foreign key (C_ID) references Customer(C_Id));
+CREATE TABLE Bill (
+    Bill_Id INT PRIMARY KEY AUTO_INCREMENT,
+    C_Id INT,
+    Time_Stamp DATETIME,
+    TotalAmount DOUBLE,
+    FOREIGN KEY (C_ID)
+        REFERENCES Customer (C_Id)
+);
     
-CREATE TABLE Transaction(
-    T_Id int primary key auto_increment,
-    Bill_Id int,
-    P_Id int,
-    Quantity int,
-    foreign key (Bill_ID) references Bill(Bill_Id),
-    foreign key (P_ID) references Product(P_Id));
-    
-    CREATE TABLE Cart(
-    Cart_Id int primary key auto_increment,
-    C_Id int,
-    P_Id int,
-    Quantity int,
-    TotalAmount double,
-    foreign key (C_ID) references Customer(C_Id),
-    foreign key (P_ID) references Product(P_Id));
-    
-    drop table Cart;
+CREATE TABLE Transaction (
+    T_Id INT PRIMARY KEY AUTO_INCREMENT,
+    Bill_Id INT,
+    P_Id INT,
+    Quantity INT,
+    FOREIGN KEY (Bill_ID)
+        REFERENCES Bill (Bill_Id),
+    FOREIGN KEY (P_ID)
+        REFERENCES Product (P_Id)
+);
 
-insert into Product
-values(101,"IKIGAI","book",499,1),
+CREATE TABLE Cart (
+    Cart_Id INT PRIMARY KEY AUTO_INCREMENT,
+    C_Id INT,
+    P_Id INT,
+    Quantity INT,
+    TotalAmount DOUBLE,
+    FOREIGN KEY (C_ID)
+        REFERENCES Customer (C_Id),
+    FOREIGN KEY (P_ID)
+        REFERENCES Product (P_Id)
+);
+
+DROP TABLE Cart;
+
+INSERT INTO Product
+VALUES(101,"IKIGAI","book",499,1),
 (102,"Harry Potter","book",599,1),
 (201,"Evergreen Songs","cd",200,1),
 (202,"New Songs","cd",250,1),
 (301,"Lipstick","cosmetics",650,1),
 (302,"Nail Paint","cosmetics",300,1);
 
-insert into Customer
-values(1,"Shivam","12345","9960330617","Rohini,Delhi"),
+INSERT INTO Customer
+VALUES(1,"Shivam","12345","9960330617","Rohini,Delhi"),
 (2,"Saransh","abcde","9811357600","Krishna Nagar, Delhi");
 
-insert into Cart
-values(default,1,101,2,998),
-(default,1,102,2,1198),
-(default,2,201,1,200);
+INSERT INTO Cart
+VALUES(DEFAULT,1,101,2,998),
+(DEFAULT,1,102,2,1198),
+(DEFAULT,2,201,1,200);
 
-select * from Product;
-select * from Customer;
-select * from Cart;
+SELECT * FROM Product;
+SELECT * FROM Customer;
+SELECT * FROM Cart;
 
-delete from cart;
-set sql_safe_updates = 0;
-
+DELETE FROM cart;
+SET sql_safe_updates = 0;
