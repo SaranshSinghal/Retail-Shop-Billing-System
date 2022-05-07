@@ -5,37 +5,44 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import entity.Customer;
 
 public class CustomerDaoImpl implements CustomerDAO {
 
 	@Override
-	public boolean login(int customerID, String password) {
-		// TODO Auto-generated method stub
+	public Optional<Customer> fetchCustomerDetails(int customerID) {
+		Customer customer = null;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection
-					.prepareStatement("Select C_Id, C_Password from Customer where C_Id=? and C_Password=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM Customer WHERE C_Id=?");
 			preparedStatement.setInt(1, customerID);
-			preparedStatement.setString(2, password);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				return true;
+				int cID = resultSet.getInt("C_Id");
+				String name = resultSet.getString("C_Name");
+				String password = resultSet.getString("C_Password");
+				String phoneNo = resultSet.getString("PhoneNumber");
+				String address = resultSet.getString("Address");
+				customer = new Customer(cID, name, password, phoneNo, address);
 			}
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return false;
+		Optional<Customer> customerOptional = Optional.ofNullable(customer);
+		return customerOptional;
 	}
 
 	@Override
 	public boolean register(Customer newCustomer) {
-		// TODO Auto-generated method stub
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
@@ -60,19 +67,22 @@ public class CustomerDaoImpl implements CustomerDAO {
 	}
 
 	@Override
-	public boolean updatePassword(int customerID, String oldPassword, String newPassword) {
-		// TODO Auto-generated method stub
+	public boolean updateDetails(Customer customer) {
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("select C_Password from Customer where C_Password=?");
-			preparedStatement.setString(1, oldPassword);
+			preparedStatement = connection.prepareStatement("SELECT * FROM Customer WHERE C_Id=?");
+			preparedStatement.setInt(1, customer.getCustomerID());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				preparedStatement = connection.prepareStatement("UPDATE Customer SET C_Password=? WHERE C_Id=?");
-				preparedStatement.setString(1, newPassword);
-				preparedStatement.setInt(2, customerID);
+				preparedStatement = connection.prepareStatement(
+						"UPDATE Customer SET C_Id=?,C_Name=?,C_Password=?,PhoneNumber=?,Address=? WHERE C_Id=?");
+				preparedStatement.setInt(1, customer.getCustomerID());
+				preparedStatement.setString(2, customer.getName());
+				preparedStatement.setString(3, customer.getPassword());
+				preparedStatement.setString(4, customer.getPhoneNo());
+				preparedStatement.setString(5, customer.getAddress());
 				preparedStatement.executeQuery();
 				return true;
 			}
@@ -85,9 +95,28 @@ public class CustomerDaoImpl implements CustomerDAO {
 	}
 
 	@Override
-	public boolean getAllCustomers() {
-		// TODO Auto-generated method stub
-		return false;
+	public List<Customer> getAllCustomers() {
+		Statement statement = null;
+		List<Customer> customersList = new ArrayList<>();
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM Customer");
+			while (resultSet.next()) {
+				int customerID = resultSet.getInt("C_Id");
+				String name = resultSet.getString("C_Name");
+				String password = resultSet.getString("C_Password");
+				String phoneNo = resultSet.getString("PhoneNumber");
+				String address = resultSet.getString("Address");
+				customersList.add(new Customer(customerID, name, password, phoneNo, address));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return customersList;
 	}
 
 }

@@ -1,15 +1,18 @@
 package persistence;
 
+import java.util.List;
+import java.util.Optional;
+
 import entity.Customer;
 
 public interface CustomerDAO {
 
-	Customer fetchCustomerDetails(int customerID);
+	Optional<Customer> fetchCustomerDetails(int customerID);
 
 	boolean register(Customer newCustomer);
 
 	boolean updateDetails(Customer customer);
 
-	boolean getAllCustomers(); // no password shown.
+	List<Customer> getAllCustomers(); // no password shown.
 
 }
