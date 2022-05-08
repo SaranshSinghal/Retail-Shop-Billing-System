@@ -1,13 +1,17 @@
 package service;
 
+import java.util.Optional;
+
 import entity.Product;
 
 public interface ProductService {
 
-	boolean searchProduct(int productID);
+	Optional<Product> getProduct(int productID);
 
 	boolean addProduct(Product product);
 
-	boolean updateQuantity();
+	boolean updateProduct(Product product);
+	
+	boolean deleteProduct(int productID);
 
 }

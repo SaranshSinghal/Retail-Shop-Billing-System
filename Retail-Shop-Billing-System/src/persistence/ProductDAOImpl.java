@@ -12,7 +12,7 @@ import entity.Product;
 public class ProductDAOImpl implements ProductDAO {
 
 	@Override
-	public Optional<Product> searchProduct(int productID) {
+	public Optional<Product> getProduct(int productID) {
 		Product product = null;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
@@ -60,7 +60,7 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-	public boolean addProduct(Product product) {
+	public boolean addNewProduct(Product product) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
@@ -85,15 +85,16 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-	public boolean updateQuantity(int productID, int quantity) {
+	public boolean updateProduct(Product product) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("UPDATE PRODUCT SET QUANTITY=? WHERE P_ID=?");
-			preparedStatement.setInt(1, quantity);
-			preparedStatement.setInt(2, productID);
+			preparedStatement = connection.prepareStatement("UPDATE PRODUCT SET QUANTITY=?,PRICE=? WHERE P_ID=?");
+			preparedStatement.setInt(1, product.getQuantity());
+			preparedStatement.setDouble(2,product.getPrice());
+			preparedStatement.setInt(3, product.getProductID());
 			rows = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
