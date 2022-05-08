@@ -18,8 +18,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public Optional<Customer> fetchCustomerDetails(int customerID) {
 		Customer customer = null;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection
-				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
+				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM Customer WHERE C_Id=?");
 			preparedStatement.setInt(1, customerID);
@@ -37,16 +37,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		Optional<Customer> customerOptional = Optional.ofNullable(customer);
-		return customerOptional;
+		return Optional.ofNullable(customer);
 	}
 
 	@Override
 	public boolean registerNewCustomer(Customer newCustomer) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection
-				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
+				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES(?,?,?,?,?)");
 			preparedStatement.setInt(1, newCustomer.getCustomerID());
@@ -60,17 +59,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		if (rows > 0)
-			return true;
-		else
-			return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override
 	public boolean updateCustomerDetails(Customer customer) {
+		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection
-				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
+				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM Customer WHERE C_Id=?");
 			preparedStatement.setInt(1, customer.getCustomerID());
@@ -83,23 +80,22 @@ public class CustomerDAOImpl implements CustomerDAO {
 				preparedStatement.setString(3, customer.getPassword());
 				preparedStatement.setString(4, customer.getPhoneNo());
 				preparedStatement.setString(5, customer.getAddress());
-				preparedStatement.executeQuery();
-				return true;
+				rows = preparedStatement.executeUpdate();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override
 	public List<Customer> getAllCustomers() {
 		Statement statement = null;
 		List<Customer> customersList = new ArrayList<>();
-		try (Connection connection
-				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
+				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Customer");

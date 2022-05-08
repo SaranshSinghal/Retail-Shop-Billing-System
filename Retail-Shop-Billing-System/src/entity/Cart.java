@@ -11,7 +11,7 @@ import lombok.ToString;
 @Data
 public class Cart {
 
-	int cartID;
+	int customerID;
 	int productID;
 	int quantity;
 	double totalAmount;

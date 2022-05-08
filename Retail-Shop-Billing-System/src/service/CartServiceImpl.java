@@ -1,32 +1,55 @@
 package service;
+
+import java.util.List;
 import java.util.Optional;
+
 import entity.Cart;
 import entity.Product;
+import persistence.CartDAO;
 import persistence.CartDAOImpl;
-
+import persistence.ProductDAO;
+import persistence.ProductDAOImpl;
 
 public class CartServiceImpl implements CartService {
-	private CartDAOImpl cartDAO = new CartDAOImpl();
+	private CartDAO cartDAO = new CartDAOImpl();
+
+	private ProductDAO productDAO = new ProductDAOImpl();
+
 	@Override
-	public boolean addItemsInCart(Product product, int customerID) {
-		// TODO Auto-generated method stub
-		return cartDAO.addItems(product, customerID);
+	public boolean addItemsInCart(int productID, int customerID) {
+		Optional<Cart> cartOptional = cartDAO.searchProductInCart(productID);
+		Optional<Product> productOptional = productDAO.getProduct(productID);
+		if (productOptional.isPresent()) {
+			if (!cartOptional.isPresent()) {
+				Cart cart = new Cart(customerID, productID, 1, productOptional.get().getPrice());
+				return cartDAO.addItemInCart(cart, customerID);
+			} else {
+				Cart cart = cartOptional.get();
+				cart.setQuantity(cart.getQuantity() + 1);
+				cart.setTotalAmount(cart.getTotalAmount());
+				return cartDAO.updateItemInCart(cart);
+			}
+		} else
+			return false;
 	}
 
 	@Override
-	public Optional<Cart> getCart(int customerID) {
-		// TODO Auto-generated method stub
+	public List<Cart> getCart(int customerID) {
 		return cartDAO.fetchCart(customerID);
-	
+
 	}
 
 	@Override
-	public boolean deleteCart(int customerID) {
-		// TODO Auto-generated method stub
-		Optional<Cart> cartOptional = cartDAO.fetchCart(customerID);
+	public boolean emptyCart(int customerID) {
+		return cartDAO.emptyCart(customerID);
+	}
+
+	@Override
+	public boolean deleteItemFromCart(int productID) {
+		Optional<Cart> cartOptional = cartDAO.searchProductInCart(productID);
 		if (!cartOptional.isPresent())
 			return false;
-		return cartDAO.emptyCart(customerID);
+		return cartDAO.deleteItemFromCart(productID);
 	}
 
 }

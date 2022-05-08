@@ -1,17 +1,17 @@
 package service;
 
-import java.util.Optional;
+import java.util.List;
 
 import entity.Cart;
-import entity.Product;
 
 public interface CartService {
-	
-	
-	boolean addItemsInCart(Product product, int customerID);
 
-	Optional<Cart> getCart(int customerID);
+	boolean addItemsInCart(int productID, int customerID);
 
-	boolean deleteCart(int customerID);
+	List<Cart> getCart(int customerID);
+
+	boolean deleteItemFromCart(int productID);
+
+	boolean emptyCart(int customerID);
 
 }
