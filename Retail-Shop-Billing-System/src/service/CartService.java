@@ -6,7 +6,7 @@ import entity.Cart;
 
 public interface CartService {
 
-	boolean addItemsInCart(int productID, int customerID);
+	boolean addItemsInCart(int productID,int quantity, int customerID);
 
 	List<Cart> getCart(int customerID);
 
