@@ -57,10 +57,7 @@ public class ProductDAOImpl implements ProductDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		if (rows > 0)
-			return true;
-		else
-			return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override
@@ -82,10 +79,7 @@ public class ProductDAOImpl implements ProductDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		if (rows > 0)
-			return true;
-		else
-			return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override
@@ -105,10 +99,7 @@ public class ProductDAOImpl implements ProductDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		if (rows > 0)
-			return true;
-		else
-			return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override

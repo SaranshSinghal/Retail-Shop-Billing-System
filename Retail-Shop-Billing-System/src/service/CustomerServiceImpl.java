@@ -14,7 +14,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public boolean loginCustomer(int customerID, String password) {
 		Optional<Customer> customerOptional = customerDAO.fetchCustomerDetails(customerID);
-		if (!customerOptional.isPresent() && customerOptional.get().getPassword().equals(password))
+		if (!customerOptional.isPresent() || !customerOptional.get().getPassword().equals(password))
 			return false;
 		return true;
 	}
@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public boolean updatePasssword(int customerID, String oldPassword, String newPassword) {
 		Optional<Customer> customerOptional = customerDAO.fetchCustomerDetails(customerID);
-		if (!customerOptional.isPresent() || customerOptional.get().getPassword().equals(oldPassword))
+		if (!customerOptional.isPresent() || !customerOptional.get().getPassword().equals(oldPassword))
 			return false;
 		Customer customer = new Customer(customerOptional.get().getCustomerID(), customerOptional.get().getName(),
 				newPassword, customerOptional.get().getPhoneNo(), customerOptional.get().getAddress());

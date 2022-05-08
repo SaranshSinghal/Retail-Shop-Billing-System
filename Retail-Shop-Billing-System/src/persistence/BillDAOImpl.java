@@ -13,33 +13,32 @@ import entity.Bill;
 public class BillDAOImpl implements BillDAO {
 
 	@Override
-	public boolean pushBill(int customerID,Bill newTransaction) {
+	public boolean pushBill(int customerID, Bill newTransaction) {
+		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection
-				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
+				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("INSERT INTO BILL VALUES(?,?,?,?)");
 			preparedStatement.setInt(1, newTransaction.getBillID());
 			preparedStatement.setInt(2, newTransaction.getCustomerID());
 			preparedStatement.setObject(3, newTransaction.getTimestamp());
 			preparedStatement.setDouble(4, newTransaction.getTotalAmount());
-			int rows = preparedStatement.executeUpdate();
-			if (rows > 0)
-				return true;
+			rows = preparedStatement.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override
 	public Optional<Bill> fetchBill(int billID) {
 		Bill transaction = null;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection
-				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
+				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM BILL WHERE BILL_ID=?");
 			preparedStatement.setInt(1, billID);
@@ -49,7 +48,7 @@ public class BillDAOImpl implements BillDAO {
 				int customerID = resultSet.getInt("C_Id");
 				LocalDateTime localDateTime = LocalDateTime.parse(resultSet.getObject("Time_Stamp").toString());
 				double billAmount = resultSet.getDouble("TotalAmount");
-				transaction = new Bill(billId,customerID,localDateTime, billAmount);
+				transaction = new Bill(billId, customerID, localDateTime, billAmount);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

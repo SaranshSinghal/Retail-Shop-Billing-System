@@ -15,6 +15,7 @@ public class CartDAOImpl implements CartDAO {
 
 	@Override
 	public boolean addItemInCart(Cart cart, int customerID) {
+		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
 				"wiley");) {
@@ -24,16 +25,13 @@ public class CartDAOImpl implements CartDAO {
 			preparedStatement.setInt(2, cart.getProductID());
 			preparedStatement.setInt(3, cart.getQuantity());
 			preparedStatement.setDouble(4, cart.getTotalAmount());
-			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next())
-				return true;
+			rows = preparedStatement.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override
@@ -47,11 +45,11 @@ public class CartDAOImpl implements CartDAO {
 			preparedStatement.setInt(1, customerID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				int cartid = resultSet.getInt("C_Id");
-				int productid = resultSet.getInt("P_id");
+				int custID = resultSet.getInt("C_Id");
+				int productId = resultSet.getInt("P_id");
 				int quantity = resultSet.getInt("Quantity");
-				double totalamount = resultSet.getDouble("TotalAmount");
-				cartList.add(new Cart(cartid, productid, quantity, totalamount));
+				double totalAmount = resultSet.getDouble("TotalAmount");
+				cartList.add(new Cart(custID, productId, quantity, totalAmount));
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -63,21 +61,20 @@ public class CartDAOImpl implements CartDAO {
 
 	@Override
 	public boolean emptyCart(int customerID) {
+		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
 				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("DELETE FROM Cart WHERE C_Id=?");
 			preparedStatement.setInt(1, customerID);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (resultSet.next())
-				return true;
+			rows = preparedStatement.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return rows > 0 ? true : false;
 	}
 
 	@Override

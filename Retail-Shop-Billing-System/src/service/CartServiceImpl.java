@@ -16,7 +16,7 @@ public class CartServiceImpl implements CartService {
 	private ProductDAO productDAO = new ProductDAOImpl();
 
 	@Override
-	public boolean addItemsInCart(int productID,int quant, int customerID) {
+	public boolean addItemsInCart(int productID, int quant, int customerID) {
 		Optional<Cart> cartOptional = cartDAO.searchProductInCart(productID);
 		Optional<Product> productOptional = productDAO.getProduct(productID);
 		if (productOptional.isPresent()) {

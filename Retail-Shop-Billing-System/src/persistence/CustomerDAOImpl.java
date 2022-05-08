@@ -74,12 +74,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				preparedStatement = connection.prepareStatement(
-						"UPDATE Customer SET C_Id=?,C_Name=?,C_Password=?,PhoneNumber=?,Address=? WHERE C_Id=?");
-				preparedStatement.setInt(1, customer.getCustomerID());
-				preparedStatement.setString(2, customer.getName());
-				preparedStatement.setString(3, customer.getPassword());
-				preparedStatement.setString(4, customer.getPhoneNo());
-				preparedStatement.setString(5, customer.getAddress());
+						"UPDATE Customer SET C_Name=?,C_Password=?,PhoneNumber=?,Address=? WHERE C_Id=?");
+				preparedStatement.setString(1, customer.getName());
+				preparedStatement.setString(2, customer.getPassword());
+				preparedStatement.setString(3, customer.getPhoneNo());
+				preparedStatement.setString(4, customer.getAddress());
+				preparedStatement.setInt(5, customer.getCustomerID());
 				rows = preparedStatement.executeUpdate();
 			}
 		} catch (SQLException e) {
