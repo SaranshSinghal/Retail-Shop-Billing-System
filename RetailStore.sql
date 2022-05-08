@@ -20,19 +20,11 @@ CREATE TABLE Customer (
 CREATE TABLE Bill (
     Bill_Id INT PRIMARY KEY AUTO_INCREMENT,
     C_Id INT,
-    Time_Stamp DATETIME,
-    TotalAmount DOUBLE,
-    FOREIGN KEY (C_ID)
-        REFERENCES Customer (C_Id)
-);
-    
-CREATE TABLE Transaction (
-    T_Id INT PRIMARY KEY AUTO_INCREMENT,
-    Bill_Id INT,
     P_Id INT,
     Quantity INT,
-    FOREIGN KEY (Bill_ID)
-        REFERENCES Bill (Bill_Id),
+    TotalAmount DOUBLE,
+    FOREIGN KEY (C_ID)
+        REFERENCES Customer (C_Id),
     FOREIGN KEY (P_ID)
         REFERENCES Product (P_Id)
 );
@@ -63,7 +55,7 @@ INSERT INTO Customer
 VALUES(1,"Shivam","12345","9960330617","Rohini,Delhi"),
 (2,"Saransh","abcde","9811357600","Krishna Nagar, Delhi");
 
-INSERT INTO Cart
+INSERT INTO Bill
 VALUES(DEFAULT,1,101,2,998),
 (DEFAULT,1,102,2,1198),
 (DEFAULT,2,201,1,200);
@@ -71,6 +63,7 @@ VALUES(DEFAULT,1,101,2,998),
 SELECT * FROM Product;
 SELECT * FROM Customer;
 SELECT * FROM Cart;
+SELECT * FROM Bill;
 
-DELETE FROM cart;
+DROP TABLE bill;
 SET sql_safe_updates = 0;

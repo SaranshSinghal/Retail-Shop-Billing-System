@@ -6,7 +6,7 @@ import entity.Bill;
 
 public interface BillDAO {
 
-	boolean pushBill(Bill newTransaction);
+	boolean pushBill(int customerID,Bill newTransaction);
 
 	Optional<Bill> fetchBill(int billID);
 
