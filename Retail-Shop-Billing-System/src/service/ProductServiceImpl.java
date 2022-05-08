@@ -8,33 +8,35 @@ import persistence.ProductDAOImpl;
 
 public class ProductServiceImpl implements ProductService {
 
-	ProductDAO productDao=new ProductDAOImpl();
-	
+	ProductDAO productDAO = new ProductDAOImpl();
+
 	@Override
 	public Optional<Product> getProduct(int productID) {
-		
-	
-		return productDao.getProduct(productID);
+		return productDAO.getProduct(productID);
 	}
 
 	@Override
 	public boolean addProduct(Product product) {
-		
-		return productDao.addNewProduct(product);
+		Optional<Product> productOptional = productDAO.getProduct(product.getProductID());
+		if (!productOptional.isPresent())
+			return productDAO.addNewProduct(product);
+		return false;
 	}
 
 	@Override
 	public boolean updateProduct(Product product) {
-		
-		return productDao.updateProduct(product);
+		Optional<Product> productOptional = productDAO.getProduct(product.getProductID());
+		if (!productOptional.isPresent())
+			return productDAO.updateProduct(product);
+		return false;
 	}
 
 	@Override
 	public boolean deleteProduct(int productID) {
-		
-		return productDao.deleteProduct(productID);
+		Optional<Product> productOptional = productDAO.getProduct(productID);
+		if (!productOptional.isPresent())
+			return false;
+		return productDAO.deleteProduct(productID);
 	}
-
-	
 
 }
