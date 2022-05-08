@@ -76,7 +76,6 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 		case 1:
 			List<Product> products = productService.getAllProducts();
 			for (Product product : products) {
-
 			}
 			break;
 		case 2:
