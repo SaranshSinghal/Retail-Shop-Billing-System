@@ -29,7 +29,7 @@ public class CartDAOImpl implements CartDAO {
 					resultSet= preparedStatement.executeQuery();
 					if(resultSet.next()) {
 						return true;
-						//returns true
+					
 					}		
 			
 		} catch (ClassNotFoundException e) {
