@@ -28,6 +28,7 @@ public class ProductDAOImpl implements ProductDAO {
 				double price = resultSet.getDouble("Price");
 				int quantity = resultSet.getInt("Quantity");
 				product = new Product(productid, name, category, price, quantity);
+				
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

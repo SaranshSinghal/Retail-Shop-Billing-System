@@ -10,6 +10,7 @@ public interface ProductService {
 
 	boolean addProduct(Product product);
 
+
 	boolean updateProduct(Product product);
 	
 	boolean deleteProduct(int productID);
