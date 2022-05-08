@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.Optional;
 
 import entity.Product;
@@ -37,6 +38,12 @@ public class ProductServiceImpl implements ProductService {
 		if (!productOptional.isPresent())
 			return false;
 		return productDAO.deleteProduct(productID);
+	}
+
+	@Override
+	public List<Product> getAllProducts() {
+
+		return null;
 	}
 
 }

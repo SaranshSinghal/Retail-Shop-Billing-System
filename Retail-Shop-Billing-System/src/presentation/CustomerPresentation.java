@@ -2,8 +2,8 @@ package presentation;
 
 public interface CustomerPresentation {
 
-	void showMenu();
+	void primaryMenu();
 
-	void performMenu(int choice);
+	void secondaryMenu();
 
 }

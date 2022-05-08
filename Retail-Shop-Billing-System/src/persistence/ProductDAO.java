@@ -1,5 +1,6 @@
 package persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 import entity.Product;
@@ -14,4 +15,5 @@ public interface ProductDAO {
 
 	Optional<Product> getProduct(int productID);
 
+	List<Product> getAllProducts();
 }
