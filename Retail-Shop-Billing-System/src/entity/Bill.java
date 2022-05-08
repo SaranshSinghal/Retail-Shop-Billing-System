@@ -14,6 +14,7 @@ import lombok.ToString;
 public class Bill {
 
 	int billID;
+	int customerID;
 	LocalDateTime timestamp;
 	double totalAmount;
 

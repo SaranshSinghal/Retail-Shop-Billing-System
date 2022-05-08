@@ -13,17 +13,16 @@ import entity.Bill;
 public class BillDAOImpl implements BillDAO {
 
 	@Override
-	public boolean pushBill(Bill newTransaction) {
+	public boolean pushBill(int customerID,Bill newTransaction) {
 		PreparedStatement preparedStatement = null;
 		try (Connection connection
 				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("INSERT INTO BILL VALUES(?,?,?,?,?)");
-			preparedStatement.setInt(1, newTransaction.getCustomerID());
-			preparedStatement.setInt(2, newTransaction.getTransacID());
-			preparedStatement.setInt(3, newTransaction.getNoOfProducts());
-			preparedStatement.setObject(4, newTransaction.getTimestamp());
-			preparedStatement.setDouble(5, newTransaction.getBillAmount());
+			preparedStatement = connection.prepareStatement("INSERT INTO BILL VALUES(?,?,?,?)");
+			preparedStatement.setInt(1, newTransaction.getBillID());
+			preparedStatement.setInt(2, newTransaction.getCustomerID());
+			preparedStatement.setObject(3, newTransaction.getTimestamp());
+			preparedStatement.setDouble(4, newTransaction.getTotalAmount());
 			int rows = preparedStatement.executeUpdate();
 			if (rows > 0)
 				return true;
@@ -46,12 +45,11 @@ public class BillDAOImpl implements BillDAO {
 			preparedStatement.setInt(1, billID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
+				int billId = resultSet.getInt("Bill_Id");
 				int customerID = resultSet.getInt("C_Id");
-				int transactionID = resultSet.getInt("Bill_Id");
-				int noOfProducts = resultSet.getInt("NumberOfProducts");
 				LocalDateTime localDateTime = LocalDateTime.parse(resultSet.getObject("Time_Stamp").toString());
 				double billAmount = resultSet.getDouble("TotalAmount");
-				transaction = new Bill(customerID, transactionID, noOfProducts, localDateTime, billAmount);
+				transaction = new Bill(billId,customerID,localDateTime, billAmount);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
