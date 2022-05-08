@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
 @ToString
+@Data
 public class Cart {
 
-	int cartID;
+	int customerID;
 	int productID;
 	int quantity;
 	double totalAmount;

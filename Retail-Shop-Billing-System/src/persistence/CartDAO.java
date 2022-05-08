@@ -1,15 +1,21 @@
 package persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 import entity.Cart;
-import entity.Product;
 
 public interface CartDAO {
 
-	boolean addItems(Product product, int customerID);
+	boolean addItemInCart(Cart cart, int customerID);
 
-	Optional<Cart> fetchCart(int customerID);
+	Optional<Cart> searchProductInCart(int productID);
+
+	boolean updateItemInCart(Cart cart);
+
+	boolean deleteItemFromCart(int productID);
+
+	List<Cart> fetchCart(int customerID);
 
 	boolean emptyCart(int customerID);
 

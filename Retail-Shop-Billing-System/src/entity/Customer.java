@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
+@Data
 @ToString
 public class Customer {
 
