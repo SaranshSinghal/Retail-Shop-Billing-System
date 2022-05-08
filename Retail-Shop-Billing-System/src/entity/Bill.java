@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
 @ToString
+@Data
 public class Bill {
 
 	int billID;
@@ -18,5 +18,3 @@ public class Bill {
 	double totalAmount;
 
 }
-// pid
-// quant

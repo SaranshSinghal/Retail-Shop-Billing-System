@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
 @ToString
+@Data
 public class Cart {
 
 	int cartID;
