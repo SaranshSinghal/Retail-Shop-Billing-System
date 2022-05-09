@@ -27,10 +27,10 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 
 	@Override
 	public void primaryMenu() {
-		System.out.println("Welcome to Retail Store!");
-		System.out.println("1. Login");
+		System.out.println("\n1. Login");
 		System.out.println("2. Register");
 		System.out.println("3. Exit");
+		System.out.print("Enter your choice: ");
 		Scanner scanner = new Scanner(System.in);
 		int choice = scanner.nextInt();
 		int customerID = 0;
@@ -89,53 +89,51 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			System.out.println("6. CheckOut");
 			System.out.println("7. Update Password");
 			System.out.println("8. Exit");
+			System.out.print("Enter your choice: ");
 			Scanner scanner = new Scanner(System.in);
 			int choice = scanner.nextInt();
-			int productId = 0;
+			int productID = 0;
 			switch (choice) {
 			case 1:
 				List<Product> products = productService.getAllProducts();
 				for (Product product : products)
-					System.out.println("Product ID :" + product.getProductID() + "  Product Name :" + product.getName()
-							+ "  Category :" + product.getCategory() + "  Price :" + product.getPrice());
-
+					System.out.println("Product ID: " + product.getProductID() + "\tProduct Name: " + product.getName()
+							+ "\tCategory: " + product.getCategory() + "\tQuantity: " + product.getQuantity()
+							+ "\tPrice: " + product.getPrice());
 				break;
 			case 2:
 				System.out.print("Enter Product Id: ");
-				productId = scanner.nextInt();
+				productID = scanner.nextInt();
 				System.out.print("Enter Quantity: ");
 				int quantity = scanner.nextInt();
-				Optional<Product> productOptional = productService.getProduct(productId);
-				if (productOptional.get().getQuantity() > quantity)
-					System.out.println("Stock unavailable!");
-				else if (cartService.addItemsInCart(productId, quantity, customerLoggedID))
-					System.out.println("Product added to cart successfully!");
-				else
-					System.out.println("Product addition failed!");
-
+				Optional<Product> productOptional = productService.getProduct(productID);
+				if (productOptional.isPresent()) {
+					if (productOptional.get().getQuantity() > quantity)
+						System.out.println("Insufficient Stock!");
+					else if (cartService.addItemsInCart(productOptional.get(), quantity, customerLoggedID))
+						System.out.println("Product added to cart successfully!");
+				} else
+					System.out.println("Product with ID " + productID + " does not exist!");
 				break;
 			case 3:
 				System.out.print("Enter Product Id: ");
-				productId = scanner.nextInt();
-				if (cartService.deleteItemFromCart(productId))
+				productID = scanner.nextInt();
+				if (cartService.deleteItemFromCart(productID, customerLoggedID))
 					System.out.println("Product deleted to cart successfully!");
 				else
-					System.out.println("Product deletion failed!");
-
+					System.out.println("Product with ID: " + productID + " not in cart!");
 				break;
 			case 4:
 				List<Cart> cartProducts = cartService.getCart(customerLoggedID);
 				for (Cart cart : cartProducts)
 					System.out.println("Product ID: " + cart.getProductID() + "  Quantity: " + cart.getQuantity()
 							+ "  Total Amount: " + cart.getTotalAmount());
-
 				break;
 			case 5:
 				if (cartService.emptyCart(customerLoggedID))
 					System.out.println("Cart deleted successfully!");
 				else
 					System.out.println("Cart deletion failed!");
-
 				break;
 			case 6:
 				if (billService.generateBill(customerLoggedID)) {
@@ -157,7 +155,6 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					System.out.println("Password changed successfully!");
 				else
 					System.out.println("Unsuccessful!");
-
 				break;
 			case 8:
 				scanner.close();

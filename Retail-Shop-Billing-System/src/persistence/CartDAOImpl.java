@@ -78,14 +78,15 @@ public class CartDAOImpl implements CartDAO {
 	}
 
 	@Override
-	public Optional<Cart> searchProductInCart(int productID) {
+	public Optional<Cart> searchProductInCart(int productID, int customerID) {
 		PreparedStatement preparedStatement = null;
 		Cart cart = null;
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3360/retailshop", "root",
 				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("SELECT * FROM Cart WHERE P_Id=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM CART WHERE P_Id=? AND C_Id=?");
 			preparedStatement.setInt(1, productID);
+			preparedStatement.setInt(2, customerID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				int cartid = resultSet.getInt("C_Id");
@@ -109,7 +110,7 @@ public class CartDAOImpl implements CartDAO {
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3360/retailshop", "root",
 				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("UPDATE Cart SET Quantity=?, TotalAmount=? WHERE P_Id=?");
+			preparedStatement = connection.prepareStatement("UPDATE CART SET Quantity=?, TotalAmount=? WHERE P_Id=?");
 			preparedStatement.setInt(1, cart.getQuantity());
 			preparedStatement.setDouble(2, cart.getTotalAmount());
 			preparedStatement.setInt(3, cart.getProductID());
@@ -123,14 +124,15 @@ public class CartDAOImpl implements CartDAO {
 	}
 
 	@Override
-	public boolean deleteItemFromCart(int productID) {
+	public boolean deleteItemFromCart(int productID, int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3360/retailshop", "root",
 				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("DELETE FROM Cart WHERE P_Id=?");
+			preparedStatement = connection.prepareStatement("DELETE FROM CART WHERE P_Id=? AND C_Id=?");
 			preparedStatement.setInt(1, productID);
+			preparedStatement.setInt(2, customerID);
 			rows = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

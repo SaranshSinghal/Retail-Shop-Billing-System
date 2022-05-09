@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public boolean updateProduct(Product product) {
 		Optional<Product> productOptional = productDAO.getProduct(product.getProductID());
-		if (!productOptional.isPresent())
+		if (productOptional.isPresent())
 			return productDAO.updateProduct(product);
 		return false;
 	}
@@ -35,14 +35,13 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public boolean deleteProduct(int productID) {
 		Optional<Product> productOptional = productDAO.getProduct(productID);
-		if (!productOptional.isPresent())
-			return false;
-		return productDAO.deleteProduct(productID);
+		if (productOptional.isPresent())
+			return productDAO.deleteProduct(productID);
+		return false;
 	}
 
 	@Override
 	public List<Product> getAllProducts() {
-
 		return productDAO.getAllProducts();
 	}
 
