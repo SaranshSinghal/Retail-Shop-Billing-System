@@ -27,7 +27,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 
 	@Override
 	public void primaryMenu() {
-		System.out.println("\n Hello Customer!");
+		System.out.println("\nHello Customer!");
 		System.out.println("\n1. Login");
 		System.out.println("2. Register");
 		System.out.println("3. Exit");

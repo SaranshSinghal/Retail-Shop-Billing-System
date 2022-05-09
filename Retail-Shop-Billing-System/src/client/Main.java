@@ -13,7 +13,7 @@ public class Main {
 		CustomerPresentation customerPresentationImpl = new CustomerPresentationImpl();
 		AdminPresentation adminPresentation = new AdminPresentationImpl();
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("||   Welcome to Retail Store E-Commerce Services   ||");
+		System.out.println("||  Welcome to Retail Store E-Commerce Services  ||");
 		while (true) {
 			System.out.print("\n1. Admin\n2. Customer\n3. Exit\n\nEnter your choice: ");
 			int choice1 = scanner.nextInt();
