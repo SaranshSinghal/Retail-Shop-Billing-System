@@ -1,5 +1,6 @@
 package presentation;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -36,10 +37,14 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 		String password = "";
 		switch (choice) {
 		case 1:
+			try {
 			System.out.print("Enter Your ID: ");
 			customerID = scanner.nextInt();
 			System.out.print("Enter Your Password: ");
 			password = scanner.next();
+			}catch(InputMismatchException ex) {
+				System.out.println("Please Enter valid input!");
+			}
 			if (customerService.loginCustomer(customerID, password)) {
 				customerLoggedID = customerID;
 				System.out.println("Logged In Successfully.");
@@ -48,6 +53,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				System.out.println("Log In Failed!");
 			break;
 		case 2:
+			try {
 			System.out.print("Enter Customer ID: ");
 			customerID = scanner.nextInt();
 			System.out.print("Enter Your Name: ");
@@ -65,6 +71,11 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				secondaryMenu();
 			} else
 				System.out.println("Registration Failed!");
+			}catch(InputMismatchException ex) {
+				System.out.println("Please Enter valid input!");
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
 			break;
 		case 3:
 			scanner.close();
@@ -89,6 +100,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			System.out.println("7. Update Password");
 			System.out.println("8. Exit");
 			System.out.print("Enter your choice: ");
+			try {
 			Scanner scanner = new Scanner(System.in);
 			int choice = scanner.nextInt();
 			int productID = 0;
@@ -162,6 +174,11 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				break;
 			default:
 				System.out.println("Invalid choice!!");
+			}
+			}catch(InputMismatchException ex) {
+				System.out.println("Please Enter valid input!");
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
 			}
 		}
 	}

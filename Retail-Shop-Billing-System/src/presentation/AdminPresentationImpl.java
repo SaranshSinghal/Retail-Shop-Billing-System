@@ -1,5 +1,6 @@
 package presentation;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -29,6 +30,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 	public void performMenu(int choice) {
 		Scanner scanner = new Scanner(System.in);
 		int productID = 0;
+		try {
 		switch (choice) {
 		case 1:
 			List<Product> productsList = productService.getAllProducts();
@@ -113,6 +115,11 @@ public class AdminPresentationImpl implements AdminPresentation {
 			break;
 		default:
 			System.out.println("Invalid choice! Please enter valid choice.");
+		}
+		}catch(InputMismatchException ex) {
+			System.out.println("Please Enter valid input!");
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
