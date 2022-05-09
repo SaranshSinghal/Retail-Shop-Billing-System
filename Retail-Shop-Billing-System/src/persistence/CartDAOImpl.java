@@ -107,7 +107,7 @@ public class CartDAOImpl implements CartDAO {
 	public boolean updateItemInCart(Cart cart, int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3360/retailshop", "root",
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
 				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection

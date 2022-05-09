@@ -38,11 +38,11 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 		switch (choice) {
 		case 1:
 			try {
-			System.out.print("Enter Your ID: ");
-			customerID = scanner.nextInt();
-			System.out.print("Enter Your Password: ");
-			password = scanner.next();
-			}catch(InputMismatchException ex) {
+				System.out.print("Enter Your ID: ");
+				customerID = scanner.nextInt();
+				System.out.print("Enter Your Password: ");
+				password = scanner.next();
+			} catch (InputMismatchException ex) {
 				System.out.println("Please Enter valid input!");
 			}
 			if (customerService.loginCustomer(customerID, password)) {
@@ -54,26 +54,26 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			break;
 		case 2:
 			try {
-			System.out.print("Enter Customer ID: ");
-			customerID = scanner.nextInt();
-			System.out.print("Enter Your Name: ");
-			String name = scanner.next();
-			System.out.print("Enter Your Password: ");
-			password = scanner.next();
-			System.out.print("Enter Your Address: ");
-			String address = scanner.next();
-			System.out.print("Enter Your Phone Number: ");
-			String phoneNo = scanner.next();
-			Customer customer = new Customer(customerID, name, password, address, phoneNo);
-			if (customerService.registerCustomer(customer)) {
-				customerLoggedID = customerID;
-				System.out.println("Registered Successfully.");
-				secondaryMenu();
-			} else
-				System.out.println("Registration Failed!");
-			}catch(InputMismatchException ex) {
+				System.out.print("Enter Customer ID: ");
+				customerID = scanner.nextInt();
+				System.out.print("Enter Your Name: ");
+				String name = scanner.next();
+				System.out.print("Enter Your Password: ");
+				password = scanner.next();
+				System.out.print("Enter Your Address: ");
+				String address = scanner.next();
+				System.out.print("Enter Your Phone Number: ");
+				String phoneNo = scanner.next();
+				Customer customer = new Customer(customerID, name, password, address, phoneNo);
+				if (customerService.registerCustomer(customer)) {
+					customerLoggedID = customerID;
+					System.out.println("Registered Successfully.");
+					secondaryMenu();
+				} else
+					System.out.println("Registration Failed!");
+			} catch (InputMismatchException ex) {
 				System.out.println("Please Enter valid input!");
-			}catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 			break;
@@ -101,83 +101,86 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			System.out.println("8. Exit");
 			System.out.print("Enter your choice: ");
 			try {
-			Scanner scanner = new Scanner(System.in);
-			int choice = scanner.nextInt();
-			int productID = 0;
-			switch (choice) {
-			case 1:
-				List<Product> products = productService.getAllProducts();
-				for (Product product : products)
-					System.out.println("Product ID: " + product.getProductID() + "\tProduct Name: " + product.getName()
-							+ "\tCategory: " + product.getCategory() + "\tQuantity: " + product.getQuantity()
-							+ "\tPrice: " + product.getPrice());
-				break;
-			case 2:
-				System.out.print("Enter Product Id: ");
-				productID = scanner.nextInt();
-				System.out.print("Enter Quantity: ");
-				int quantity = scanner.nextInt();
-				Optional<Product> productOptional = productService.getProduct(productID);
-				if (productOptional.isPresent()) {
-					if (productOptional.get().getQuantity() > quantity)
-						System.out.println("Insufficient Stock!");
-					else if (cartService.addItemsInCart(productOptional.get(), quantity, customerLoggedID))
-						System.out.println("Product added to cart successfully!");
-				} else
-					System.out.println("Product with ID " + productID + " does not exist!");
-				break;
-			case 3:
-				System.out.print("Enter Product Id: ");
-				productID = scanner.nextInt();
-				if (cartService.deleteItemFromCart(productID, customerLoggedID))
-					System.out.println("Product deleted from cart successfully!");
-				else
-					System.out.println("Product with ID: " + productID + " not in cart!");
-				break;
-			case 4:
-				List<Cart> cartProducts = cartService.getCart(customerLoggedID);
-				for (Cart cart : cartProducts)
-					System.out.println("Product ID: " + cart.getProductID() + "  Quantity: " + cart.getQuantity()
-							+ "  Total Amount: " + cart.getTotalAmount());
-				break;
-			case 5:
-				if (cartService.emptyCart(customerLoggedID))
-					System.out.println("Cart deleted successfully!");
-				else
-					System.out.println("Cart deletion failed!");
-				break;
-			case 6:
-				if (billService.generateBill(customerLoggedID)) {
-					List<Cart> displayCart = cartService.getCart(customerLoggedID);
-					for (Cart cart : displayCart)
-						System.out.println("Product ID: " + cart.getProductID() + "\tQuantity: " + cart.getQuantity()
-								+ "\tTotal Amount: " + cart.getTotalAmount());
+				Scanner scanner = new Scanner(System.in);
+				int choice = scanner.nextInt();
+				int productID = 0;
+				switch (choice) {
+				case 1:
+					List<Product> products = productService.getAllProducts();
+					for (Product product : products)
+						System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
+								+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
+								+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+					break;
+				case 2:
+					System.out.print("Enter Product Id: ");
+					productID = scanner.nextInt();
+					System.out.print("Enter Quantity: ");
+					int quantity = scanner.nextInt();
+					Optional<Product> productOptional = productService.getProduct(productID);
+					if (productOptional.isPresent()) {
+						if (productOptional.get().getQuantity() < quantity)
+							System.out.println("Insufficient Stock!");
+						else if (cartService.addItemsInCart(productOptional.get(), quantity, customerLoggedID))
+							System.out.println("Product added to cart successfully!");
+					} else
+						System.out.println("Product with ID " + productID + " does not exist!");
+					break;
+				case 3:
+					System.out.print("Enter Product Id: ");
+					productID = scanner.nextInt();
+					if (cartService.deleteItemFromCart(productID, customerLoggedID))
+						System.out.println("Product deleted from cart successfully!");
+					else
+						System.out.println("Product with ID: " + productID + " not in cart!");
+					break;
+				case 4:
+					List<Cart> cartProducts = cartService.getCart(customerLoggedID);
+					if (cartProducts.size() > 0)
+						for (Cart cart : cartProducts)
+							System.out.println("Product ID: " + cart.getProductID() + "  Quantity: "
+									+ cart.getQuantity() + "  Total Amount: " + cart.getTotalAmount());
+					else
+						System.out.println("The cart is empty!");
+					break;
+				case 5:
 					if (cartService.emptyCart(customerLoggedID))
-						System.out.println("Thank you for shopping with us");
-				} else
-					System.out.println("Bill generation failed!");
-				break;
-			case 7:
-				System.out.print("Enter old password: ");
-				String oldPassword = scanner.next();
-				System.out.print("Enter new password: ");
-				String newPassword = scanner.next();
-				if (customerService.updatePasssword(customerLoggedID, oldPassword, newPassword))
-					System.out.println("Password changed successfully!");
-				else
-					System.out.println("Unsuccessful!");
-				break;
-			case 8:
-				scanner.close();
-				System.out.println("Thank you for visiting!!");
-				System.exit(0);
-				break;
-			default:
-				System.out.println("Invalid choice!!");
-			}
-			}catch(InputMismatchException ex) {
+						System.out.println("Cart deleted successfully!");
+					else
+						System.out.println("Cart deletion failed!");
+					break;
+				case 6:
+					if (billService.generateBill(customerLoggedID)) {
+						List<Cart> displayCart = cartService.getCart(customerLoggedID);
+						for (Cart cart : displayCart)
+							System.out.println("Product ID: " + cart.getProductID() + "\t\tQuantity: "
+									+ cart.getQuantity() + "\t\tTotal Amount: " + cart.getTotalAmount());
+						if (cartService.emptyCart(customerLoggedID))
+							System.out.println("Thank you for shopping with us");
+					} else
+						System.out.println("Bill generation failed!");
+					break;
+				case 7:
+					System.out.print("Enter old password: ");
+					String oldPassword = scanner.next();
+					System.out.print("Enter new password: ");
+					String newPassword = scanner.next();
+					if (customerService.updatePasssword(customerLoggedID, oldPassword, newPassword))
+						System.out.println("Password changed successfully!");
+					else
+						System.out.println("Unsuccessful!");
+					break;
+				case 8:
+					scanner.close();
+					System.out.println("Thank you for visiting!!");
+					System.exit(0);
+					break;
+				default:
+					System.out.println("Invalid choice!!");
+				}
+			} catch (InputMismatchException ex) {
 				System.out.println("Please Enter valid input!");
-			}catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 		}
