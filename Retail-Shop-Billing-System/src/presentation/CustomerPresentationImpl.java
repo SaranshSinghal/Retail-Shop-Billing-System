@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import entity.Bill;
 import entity.Cart;
 import entity.Customer;
 import entity.Product;
+import service.BillService;
+import service.BillServiceImpl;
 import service.CartService;
 import service.CartServiceImpl;
 import service.CustomerService;
@@ -16,9 +19,10 @@ import service.ProductServiceImpl;
 
 public class CustomerPresentationImpl implements CustomerPresentation {
 
-	CustomerService customerService = new CustomerServiceImpl();
-	ProductService productService = new ProductServiceImpl();
-	CartService cartService = new CartServiceImpl();
+	private CustomerService customerService = new CustomerServiceImpl();
+	private ProductService productService = new ProductServiceImpl();
+	private CartService cartService = new CartServiceImpl();
+	private BillService billService = new BillServiceImpl();
 	private int customerLoggedID = Integer.MIN_VALUE;
 
 	@Override
@@ -26,29 +30,34 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 		System.out.println("Welcome to Retail Store!");
 		System.out.println("1. Login");
 		System.out.println("2. Register");
+		System.out.println("3. Exit");
 		Scanner scanner = new Scanner(System.in);
 		int choice = scanner.nextInt();
-		if (choice == 1) {
-			System.out.println("Enter Customer ID");
-			int customerID = scanner.nextInt();
-			System.out.println("Enter Password");
-			String password = scanner.next();
+		int customerID = 0;
+		String password = "";
+		switch (choice) {
+		case 1:
+			System.out.print("Enter Your ID: ");
+			customerID = scanner.nextInt();
+			System.out.print("Enter Your Password: ");
+			password = scanner.next();
 			if (customerService.loginCustomer(customerID, password)) {
 				customerLoggedID = customerID;
 				System.out.println("Logged In Successfully.");
 				secondaryMenu();
 			} else
 				System.out.println("Log In Failed!");
-		} else if (choice == 2) {
-			System.out.println("Enter Customer ID");
-			int customerID = scanner.nextInt();
-			System.out.println("Enter Name");
+			break;
+		case 2:
+			System.out.print("Enter Customer ID: ");
+			customerID = scanner.nextInt();
+			System.out.print("Enter Your Name: ");
 			String name = scanner.next();
-			System.out.println("Enter Password");
-			String password = scanner.next();
-			System.out.println("Enter Address");
+			System.out.print("Enter Your Password: ");
+			password = scanner.next();
+			System.out.print("Enter Your Address: ");
 			String address = scanner.next();
-			System.out.println("Enter Phone Number");
+			System.out.print("Enter Your Phone Number: ");
 			String phoneNo = scanner.next();
 			Customer customer = new Customer(customerID, name, password, address, phoneNo);
 			if (customerService.registerCustomer(customer)) {
@@ -57,8 +66,15 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				secondaryMenu();
 			} else
 				System.out.println("Registration Failed!");
-		} else {
+			break;
+		case 3:
+			scanner.close();
+			System.out.println("Thank you for visiting!!");
+			System.exit(0);
+			break;
+		default:
 			System.out.println("Invalid choice!");
+
 		}
 	}
 
@@ -79,69 +95,69 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			switch (choice) {
 			case 1:
 				List<Product> products = productService.getAllProducts();
-				for (Product product : products) {
+				for (Product product : products)
 					System.out.println("Product ID :" + product.getProductID() + "  Product Name :" + product.getName()
 							+ "  Category :" + product.getCategory() + "  Price :" + product.getPrice());
-				}
+
 				break;
 			case 2:
-				System.out.println("Enter Product Id :");
+				System.out.print("Enter Product Id: ");
 				productId = scanner.nextInt();
-				System.out.println("Enter Quantity :");
+				System.out.print("Enter Quantity: ");
 				int quantity = scanner.nextInt();
 				Optional<Product> productOptional = productService.getProduct(productId);
-				if (productOptional.get().getQuantity() > quantity) {
+				if (productOptional.get().getQuantity() > quantity)
 					System.out.println("Stock unavailable!");
-				} else if (cartService.addItemsInCart(productId, quantity, customerLoggedID)) {
+				else if (cartService.addItemsInCart(productId, quantity, customerLoggedID))
 					System.out.println("Product added to cart successfully!");
-				} else {
+				else
 					System.out.println("Product addition failed!");
-				}
+
 				break;
 			case 3:
-				System.out.println("Enter Product Id :");
+				System.out.print("Enter Product Id: ");
 				productId = scanner.nextInt();
-				if (cartService.deleteItemFromCart(productId)) {
+				if (cartService.deleteItemFromCart(productId))
 					System.out.println("Product deleted to cart successfully!");
-				} else {
+				else
 					System.out.println("Product deletion failed!");
-				}
+
 				break;
 			case 4:
 				List<Cart> cartProducts = cartService.getCart(customerLoggedID);
-				for (Cart cart : cartProducts) {
+				for (Cart cart : cartProducts)
 					System.out.println("Product ID: " + cart.getProductID() + "  Quantity: " + cart.getQuantity()
 							+ "  Total Amount: " + cart.getTotalAmount());
-				}
+
 				break;
 			case 5:
-				if (cartService.emptyCart(customerLoggedID)) {
+				if (cartService.emptyCart(customerLoggedID))
 					System.out.println("Cart deleted successfully!");
-				} else {
+				else
 					System.out.println("Cart deletion failed!");
-				}
+
 				break;
 			case 6:
-				List<Cart> displayCart = cartService.getCart(customerLoggedID);
-				for (Cart cart : displayCart)
-					System.out.println("Product ID: " + cart.getProductID() + "  Quantity: " + cart.getQuantity()
-							+ "  Total Amount: " + cart.getTotalAmount());
-				if (cartService.emptyCart(customerLoggedID)) {
-					System.out.println("Cart Emptied Successfully");
-				} else {
-					System.out.println("Cart deletion failed!");
-				}
+				if (billService.generateBill(customerLoggedID)) {
+					List<Bill> displayBill = billService.displayBill(customerLoggedID);
+					for (Bill bill : displayBill)
+						System.out.println("TimeStamp: " + bill.getTimestamp() + "  Product ID: " + bill.getProductID()
+								+ "  Quantity: " + bill.getQuantity() + "  Total Amount: " + bill.getTotalAmount());
+					if (cartService.emptyCart(customerLoggedID))
+						System.out.println("Cart Emptied Successfully");
+				} else
+					System.out.println("Bill generation failed!");
 				break;
 			case 7:
-				System.out.println("Enter old password :");
+				System.out.print("Enter old password: ");
 				String oldPassword = scanner.next();
-				System.out.println("Enter new password :");
+				System.out.print("Enter new password: ");
 				String newPassword = scanner.next();
-				if (customerService.updatePasssword(customerLoggedID, oldPassword, newPassword)) {
+				if (customerService.updatePasssword(customerLoggedID, oldPassword, newPassword))
 					System.out.println("Password changed successfully!");
-				} else {
+				else
 					System.out.println("Unsuccessful!");
-				}
+
 				break;
 			case 8:
 				scanner.close();

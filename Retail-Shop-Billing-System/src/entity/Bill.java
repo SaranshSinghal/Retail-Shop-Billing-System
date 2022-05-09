@@ -13,9 +13,10 @@ import lombok.ToString;
 @Data
 public class Bill {
 
-	int billID;
 	int customerID;
+	int productID;
 	LocalDateTime timestamp;
+	int quantity;
 	double totalAmount;
 
 }

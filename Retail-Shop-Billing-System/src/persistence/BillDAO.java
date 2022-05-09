@@ -1,13 +1,14 @@
 package persistence;
 
-import java.util.Optional;
+import java.util.List;
 
 import entity.Bill;
+import entity.Cart;
 
 public interface BillDAO {
 
-	boolean pushBill(int customerID,Bill newTransaction);
+	boolean pushBill(int customerID, List<Cart> cartList);
 
-	Optional<Bill> fetchBill(int billID);
+	List<Bill> fetchBill(int customerID);
 
 }
