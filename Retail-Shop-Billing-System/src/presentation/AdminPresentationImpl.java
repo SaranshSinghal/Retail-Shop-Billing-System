@@ -18,6 +18,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 
 	@Override
 	public void showMenu() {
+		System.out.println("\nHello Admin!");
 		System.out.println("\n1. List All Products");
 		System.out.println("2. Add new Product");
 		System.out.println("3. Delete product");
