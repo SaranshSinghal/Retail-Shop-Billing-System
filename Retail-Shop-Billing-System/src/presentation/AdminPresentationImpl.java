@@ -44,10 +44,11 @@ public class AdminPresentationImpl implements AdminPresentation {
 			Product newProduct = new Product();
 			System.out.print("Enter productID: ");
 			newProduct.setProductID(scanner.nextInt());
+			scanner.nextLine();
 			System.out.print("Enter product name: ");
-			newProduct.setName(scanner.next());
+			newProduct.setName(scanner.nextLine());
 			System.out.print("Enter product category: ");
-			newProduct.setCategory(scanner.next());
+			newProduct.setCategory(scanner.nextLine());
 			System.out.print("Enter product price: ");
 			newProduct.setPrice(scanner.nextDouble());
 			System.out.print("Enter product quantity: ");

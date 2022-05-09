@@ -120,7 +120,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				int quantity = scanner.nextInt();
 				Optional<Product> productOptional = productService.getProduct(productID);
 				if (productOptional.isPresent()) {
-					if (productOptional.get().getQuantity() > quantity)
+					if (productOptional.get().getQuantity() < quantity)
 						System.out.println("Insufficient Stock!");
 					else if (cartService.addItemsInCart(productOptional.get(), quantity, customerLoggedID))
 						System.out.println("Product added to cart successfully!");
