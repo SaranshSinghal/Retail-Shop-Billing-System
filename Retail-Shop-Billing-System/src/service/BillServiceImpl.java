@@ -23,11 +23,20 @@ public class BillServiceImpl implements BillService {
 	public boolean generateBill(int customerID) {
 		List<Cart> cartProducts = cartDAO.fetchCart(customerID);
 		for (Cart cart : cartProducts) {
-			Optional<Product> productoOptional = productDAO.getProduct(cart.getProductID());
-			if (productoOptional.get().getCategory().equals("cd"))
-				cart.setTotalAmount(cart.getTotalAmount() * 1.1);
-			else if (productoOptional.get().getCategory().equals("cosmetics"))
-				cart.setTotalAmount(cart.getTotalAmount() * 1.12);
+			Optional<Product> productOptional = productDAO.getProduct(cart.getProductID());
+			Product product = productOptional.get();
+			product.setQuantity(product.getQuantity() - cart.getQuantity());
+			productDAO.updateProduct(product);
+			if (product.getCategory().equalsIgnoreCase("cd")) {
+				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.CD_TAX;
+				cart.setTotalAmount(totalAmountAfterTax);
+			} else if (product.getCategory().equalsIgnoreCase("cosmetics")) {
+				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.COSMETICS_TAX;
+				cart.setTotalAmount(totalAmountAfterTax);
+			} else if (product.getCategory().equalsIgnoreCase("book")) {
+				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.BOOKS_TAX;
+				cart.setTotalAmount(totalAmountAfterTax);
+			}
 		}
 		return billDAO.pushBill(customerID, cartProducts);
 	}

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import entity.Bill;
 import entity.Cart;
 import entity.Customer;
 import entity.Product;
@@ -119,7 +118,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				System.out.print("Enter Product Id: ");
 				productID = scanner.nextInt();
 				if (cartService.deleteItemFromCart(productID, customerLoggedID))
-					System.out.println("Product deleted to cart successfully!");
+					System.out.println("Product deleted from cart successfully!");
 				else
 					System.out.println("Product with ID: " + productID + " not in cart!");
 				break;
@@ -137,12 +136,12 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				break;
 			case 6:
 				if (billService.generateBill(customerLoggedID)) {
-					List<Bill> displayBill = billService.displayBill(customerLoggedID);
-					for (Bill bill : displayBill)
-						System.out.println("TimeStamp: " + bill.getTimestamp() + "  Product ID: " + bill.getProductID()
-								+ "  Quantity: " + bill.getQuantity() + "  Total Amount: " + bill.getTotalAmount());
+					List<Cart> displayCart = cartService.getCart(customerLoggedID);
+					for (Cart cart : displayCart)
+						System.out.println("Product ID: " + cart.getProductID() + "\tQuantity: " + cart.getQuantity()
+								+ "\tTotal Amount: " + cart.getTotalAmount());
 					if (cartService.emptyCart(customerLoggedID))
-						System.out.println("Cart Emptied Successfully");
+						System.out.println("Thank you for shopping with us");
 				} else
 					System.out.println("Bill generation failed!");
 				break;
