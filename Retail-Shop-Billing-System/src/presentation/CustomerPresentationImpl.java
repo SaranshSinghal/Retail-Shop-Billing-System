@@ -27,6 +27,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 
 	@Override
 	public void primaryMenu() {
+		System.out.println("\n Hello Customer!");
 		System.out.println("\n1. Login");
 		System.out.println("2. Register");
 		System.out.println("3. Exit");
@@ -108,9 +109,9 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			case 1:
 				List<Product> products = productService.getAllProducts();
 				for (Product product : products)
-					System.out.println("Product ID: " + product.getProductID() + "\tProduct Name: " + product.getName()
-							+ "\tCategory: " + product.getCategory() + "\tQuantity: " + product.getQuantity()
-							+ "\tPrice: " + product.getPrice());
+					System.out.println("Product ID: " + product.getProductID() + "\t|| Product Name: " + product.getName()
+							+ "\t|| Category: " + product.getCategory() + "\t|| Quantity: " + product.getQuantity()
+							+ "\t|| Price: " + product.getPrice());
 				break;
 			case 2:
 				System.out.print("Enter Product Id: ");
@@ -137,8 +138,8 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			case 4:
 				List<Cart> cartProducts = cartService.getCart(customerLoggedID);
 				for (Cart cart : cartProducts)
-					System.out.println("Product ID: " + cart.getProductID() + "  Quantity: " + cart.getQuantity()
-							+ "  Total Amount: " + cart.getTotalAmount());
+					System.out.println("Product ID: " + cart.getProductID() + "||  Quantity: " + cart.getQuantity()
+							+ "||  Total Amount: " + cart.getTotalAmount());
 				break;
 			case 5:
 				if (cartService.emptyCart(customerLoggedID))
@@ -150,8 +151,8 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				if (billService.generateBill(customerLoggedID)) {
 					List<Cart> displayCart = cartService.getCart(customerLoggedID);
 					for (Cart cart : displayCart)
-						System.out.println("Product ID: " + cart.getProductID() + "\tQuantity: " + cart.getQuantity()
-								+ "\tTotal Amount: " + cart.getTotalAmount());
+						System.out.println("Product ID: " + cart.getProductID() + "\t|| Quantity: " + cart.getQuantity()
+								+ "\t|| Total Amount: " + cart.getTotalAmount());
 					if (cartService.emptyCart(customerLoggedID))
 						System.out.println("Thank you for shopping with us");
 				} else
