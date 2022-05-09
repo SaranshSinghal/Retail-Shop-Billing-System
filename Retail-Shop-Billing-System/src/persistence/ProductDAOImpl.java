@@ -69,7 +69,7 @@ public class ProductDAOImpl implements ProductDAO {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("INSERT INTO PRODUCT VALUES(?,?,?,?,?)");
 			preparedStatement.setInt(1, product.getProductID());
-			preparedStatement.setString(1, product.getName());
+			preparedStatement.setString(2, product.getName());
 			preparedStatement.setString(3, product.getCategory());
 			preparedStatement.setDouble(4, product.getPrice());
 			preparedStatement.setInt(5, product.getQuantity());
