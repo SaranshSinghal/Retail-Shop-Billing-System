@@ -9,6 +9,8 @@ import service.ProductServiceImpl;
 
 public class AdminPresentationImpl implements AdminPresentation {
 
+	private final String USERNAME="team4";
+	private final String PASSWORD="123456789";
 	
 	ProductService productService=new ProductServiceImpl();
 	@Override
@@ -52,7 +54,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 			Optional<Product> optionalProduct=productService.getProduct(productID);
 			if(optionalProduct.isPresent())
 			{
-				System.out.println("Select field to update\n1.price/n2.quantity\n3.Both");
+				System.out.println("Select field to update\n1.price\n2.quantity\n3.Both");
 				int updateChoice=scanner.nextInt();
 				if(updateChoice==1) {
 					System.out.println("Enter new price of the product:");
@@ -93,6 +95,13 @@ public class AdminPresentationImpl implements AdminPresentation {
 			break;
 		default:System.out.println("Invalid choice! Please enter valid choice");
 		}
+	}
+
+	@Override
+	public boolean validate(String userName, String password) {
+		if(userName.equals(USERNAME) && password.equals(PASSWORD))
+			return true;
+		return false;
 	}
 
 }
