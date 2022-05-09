@@ -103,8 +103,8 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			System.out.print("Enter your choice: ");
 			try {
 				Scanner scanner = new Scanner(System.in);
-				int choice = scanner.nextInt();
-				int productID = 0;
+				int choice = scanner.nextInt(), productID = 0;
+				List<Cart> cartProducts = null;
 				switch (choice) {
 				case 1:
 					List<Product> products = productService.getAllProducts();
@@ -136,7 +136,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 						System.out.println("Product with ID: " + productID + " not in cart!");
 					break;
 				case 4:
-					List<Cart> cartProducts = cartService.getCart(customerLoggedID);
+					cartProducts = cartService.getCart(customerLoggedID);
 					if (cartProducts.size() > 0)
 						for (Cart cart : cartProducts)
 							System.out.println("Product ID: " + cart.getProductID() + "  Quantity: "
@@ -145,10 +145,17 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 						System.out.println("The cart is empty!");
 					break;
 				case 5:
-					if (cartService.emptyCart(customerLoggedID))
-						System.out.println("Cart deleted successfully!");
-					else
-						System.out.println("Cart deletion failed!");
+					cartProducts = cartService.getCart(customerLoggedID);
+					if (cartProducts.size() > 0) {
+						for (Cart cart : cartProducts) {
+							Product product = productService.getProduct(cart.getProductID()).get();
+							product.setQuantity(product.getQuantity() + cart.getQuantity());
+							productService.updateProduct(product);
+						}
+						if (cartService.emptyCart(customerLoggedID))
+							System.out.println("Cart deleted successfully!");
+					} else
+						System.out.println("The cart is empty!");
 					break;
 				case 6:
 					if (billService.generateBill(customerLoggedID)) {

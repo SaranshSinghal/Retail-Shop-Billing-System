@@ -36,9 +36,9 @@ public class AdminPresentationImpl implements AdminPresentation {
 			case 1:
 				List<Product> productsList = productService.getAllProducts();
 				for (Product product : productsList)
-					System.out.println("Product ID: " + product.getProductID() + "\tProduct Name: " + product.getName()
-							+ "\tCategory: " + product.getCategory() + "\tQuantity: " + product.getQuantity()
-							+ "\tPrice: " + product.getPrice());
+					System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
+							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
+							+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
 				break;
 			case 2:
 				Product newProduct = new Product();
@@ -103,9 +103,9 @@ public class AdminPresentationImpl implements AdminPresentation {
 				Optional<Product> productopOptional = productService.getProduct(productID);
 				if (productopOptional.isPresent()) {
 					Product product = productopOptional.get();
-					System.out.println("Product ID: " + product.getProductID() + "\tProduct Name: " + product.getName()
-							+ "\tCategory: " + product.getCategory() + "\tQuantity: " + product.getQuantity()
-							+ "\tPrice: " + product.getPrice());
+					System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
+							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
+							+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
 				} else
 					System.out.println("Product with " + productID + " does not exist!");
 				break;

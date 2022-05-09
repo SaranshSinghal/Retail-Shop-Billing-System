@@ -25,8 +25,6 @@ public class BillServiceImpl implements BillService {
 		for (Cart cart : cartProducts) {
 			Optional<Product> productOptional = productDAO.getProduct(cart.getProductID());
 			Product product = productOptional.get();
-			product.setQuantity(product.getQuantity() - cart.getQuantity());
-			productDAO.updateProduct(product);
 			if (product.getCategory().equalsIgnoreCase("cd")) {
 				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.CD_TAX;
 				cart.setTotalAmount(totalAmountAfterTax);
