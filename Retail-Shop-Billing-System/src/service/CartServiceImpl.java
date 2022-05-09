@@ -21,7 +21,7 @@ public class CartServiceImpl implements CartService {
 			Cart cart = cartOptional.get();
 			cart.setQuantity(cart.getQuantity() + 1);
 			cart.setTotalAmount(product.getPrice() * cart.getQuantity());
-			return cartDAO.updateItemInCart(cart);
+			return cartDAO.updateItemInCart(cart, customerID);
 		}
 	}
 

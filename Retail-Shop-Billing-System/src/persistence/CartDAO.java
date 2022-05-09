@@ -11,7 +11,7 @@ public interface CartDAO {
 
 	Optional<Cart> searchProductInCart(int productID, int customerID);
 
-	boolean updateItemInCart(Cart cart);
+	boolean updateItemInCart(Cart cart, int customerID);
 
 	boolean deleteItemFromCart(int productID, int customerID);
 

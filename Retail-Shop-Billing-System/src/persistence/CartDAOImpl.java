@@ -104,16 +104,18 @@ public class CartDAOImpl implements CartDAO {
 	}
 
 	@Override
-	public boolean updateItemInCart(Cart cart) {
+	public boolean updateItemInCart(Cart cart, int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3360/retailshop", "root",
 				"wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection.prepareStatement("UPDATE CART SET Quantity=?, TotalAmount=? WHERE P_Id=?");
+			preparedStatement = connection
+					.prepareStatement("UPDATE CART SET Quantity=?, TotalAmount=? WHERE P_Id=? AND C_Id=?");
 			preparedStatement.setInt(1, cart.getQuantity());
 			preparedStatement.setDouble(2, cart.getTotalAmount());
 			preparedStatement.setInt(3, cart.getProductID());
+			preparedStatement.setInt(4, customerID);
 			rows = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
