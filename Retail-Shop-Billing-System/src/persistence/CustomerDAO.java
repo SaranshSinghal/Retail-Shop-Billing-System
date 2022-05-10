@@ -13,6 +13,6 @@ public interface CustomerDAO {
 
 	boolean updateCustomerDetails(Customer customer);
 
-	List<Customer> getAllCustomers(); // no password shown.
+	List<Customer> getAllCustomers();
 
 }

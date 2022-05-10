@@ -105,7 +105,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				String password = resultSet.getString("C_Password");
 				String phoneNo = resultSet.getString("PhoneNumber");
 				String address = resultSet.getString("Address");
-				customersList.add(new Customer(customerID, name, password, phoneNo, address));
+				customersList.add(new Customer(customerID, name, password, address, phoneNo));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

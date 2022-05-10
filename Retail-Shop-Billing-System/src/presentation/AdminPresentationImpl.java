@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import entity.Customer;
 import entity.Product;
+import service.CustomerService;
+import service.CustomerServiceImpl;
 import service.ProductService;
 import service.ProductServiceImpl;
 
@@ -15,6 +18,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 	private final String PASSWORD = "123456789";
 
 	private ProductService productService = new ProductServiceImpl();
+	private CustomerService customerService = new CustomerServiceImpl();
 
 	@Override
 	public void showMenu() {
@@ -24,7 +28,8 @@ public class AdminPresentationImpl implements AdminPresentation {
 		System.out.println("3. Delete product");
 		System.out.println("4. Update product");
 		System.out.println("5. Search product by productID");
-		System.out.println("6. Exit");
+		System.out.println("6. List All Customers");
+		System.out.println("7. Exit");
 	}
 
 	@Override
@@ -45,6 +50,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 				System.out.print("Enter productID: ");
 				newProduct.setProductID(scanner.nextInt());
 				System.out.print("Enter product name: ");
+				scanner.nextLine();
 				newProduct.setName(scanner.nextLine());
 				System.out.print("Enter product category: ");
 				newProduct.setCategory(scanner.nextLine());
@@ -110,8 +116,20 @@ public class AdminPresentationImpl implements AdminPresentation {
 					System.out.println("Product with " + productID + " does not exist!");
 				break;
 			case 6:
+				List<Customer> customers = customerService.getAllCustomers();
+				if (customers.size() > 0)
+					for (Customer customer : customers) {
+						System.out.print("Customer ID: " + customer.getCustomerID() + "\t\tName: " + customer.getName()
+								+ "\t\tPassword: ");
+						for (int i = 1; i <= customer.getPassword().length(); i++)
+							System.out.print("*");
+						System.out.println(
+								"\t\tAddress: " + customer.getAddress() + "\t\tPhone Number: " + customer.getPhoneNo());
+					}
+				break;
+			case 7:
 				scanner.close();
-				System.out.println("Thank you for using Retail Management Services!");
+				System.out.println("||  Thank you for using Retail Management Services ||");
 				System.exit(0);
 				break;
 			default:

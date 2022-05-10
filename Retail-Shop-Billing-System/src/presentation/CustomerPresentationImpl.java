@@ -42,7 +42,8 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				System.out.print("Enter Your ID: ");
 				customerID = scanner.nextInt();
 				System.out.print("Enter Your Password: ");
-				password = scanner.next();
+				scanner.nextLine();
+				password = scanner.nextLine();
 			} catch (InputMismatchException ex) {
 				System.out.println("Please Enter valid input!");
 			}
@@ -58,11 +59,12 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				System.out.print("Enter Customer ID: ");
 				customerID = scanner.nextInt();
 				System.out.print("Enter Your Name: ");
-				String name = scanner.next();
+				scanner.nextLine();
+				String name = scanner.nextLine();
 				System.out.print("Enter Your Password: ");
-				password = scanner.next();
+				password = scanner.nextLine();
 				System.out.print("Enter Your Address: ");
-				String address = scanner.next();
+				String address = scanner.nextLine();
 				System.out.print("Enter Your Phone Number: ");
 				String phoneNo = scanner.next();
 				Customer customer = new Customer(customerID, name, password, address, phoneNo);
@@ -80,7 +82,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			break;
 		case 3:
 			scanner.close();
-			System.out.println("Thank you for visiting!!");
+			System.out.println("||  Thank you for visiting  ||");
 			System.exit(0);
 			break;
 		default:
@@ -170,9 +172,10 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					break;
 				case 7:
 					System.out.print("Enter old password: ");
-					String oldPassword = scanner.next();
+					scanner.nextLine();
+					String oldPassword = scanner.nextLine();
 					System.out.print("Enter new password: ");
-					String newPassword = scanner.next();
+					String newPassword = scanner.nextLine();
 					if (customerService.updatePasssword(customerLoggedID, oldPassword, newPassword))
 						System.out.println("Password changed successfully!");
 					else
@@ -180,7 +183,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					break;
 				case 8:
 					scanner.close();
-					System.out.println("Thank you for visiting!!");
+					System.out.println("||  Thank you for visiting  ||");
 					System.exit(0);
 					break;
 				default:

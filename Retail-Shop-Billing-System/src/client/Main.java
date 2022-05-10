@@ -22,7 +22,8 @@ public class Main {
 				System.out.print("\nEnter username: ");
 				String userName = scanner.next();
 				System.out.print("Enter password: ");
-				String password = scanner.next();
+				scanner.nextLine();
+				String password = scanner.nextLine();
 				if (adminPresentation.validate(userName, password)) {
 					while (true) {
 						adminPresentation.showMenu();
