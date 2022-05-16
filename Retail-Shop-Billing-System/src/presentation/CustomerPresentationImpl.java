@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import entity.Bill;
 import entity.Cart;
 import entity.Customer;
 import entity.Product;
@@ -100,7 +101,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 		while (true) {
 			System.out.println("\n1. List All Products");
 			System.out.println("2. Add Product to Cart");
-			System.out.println("3.Display Cart");
+			System.out.println("3. Display Cart");
 			System.out.println("4. Update Password");
 			System.out.println("5. Logout");
 			System.out.print("Enter your choice: ");
@@ -184,7 +185,9 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 	}
 	@Override
 	public void cartFunctions() {
-		System.out.println("1:Delete Product from Cart\n2:Checkout.\n3:Delete Cart");
+		System.out.println("1:Delete Product from Cart\n"
+				+ "2:Checkout.\n"
+				+ "3:Delete Cart");
 		System.out.println("Enter Choice");
 		Scanner scanner = new Scanner(System.in);
 		int choice = scanner.nextInt();
@@ -201,10 +204,16 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			break;
 		case 2:
 			if (billService.generateBill(customerLoggedID)) {
-				List<Cart> displayCart = cartService.getCart(customerLoggedID);
-				for (Cart cart : displayCart)
-					System.out.println("Product ID: " + cart.getProductID() + "\t\tQuantity: "
-							+ cart.getQuantity() + "\t\tTotal Amount: " + cart.getTotalAmount());
+				List<Bill> displayBill = billService.displayBill(customerLoggedID);
+				if(!displayBill.isEmpty()) {
+				double billAmount = 0;
+					for (Bill bill : displayBill) {
+					System.out.println("Product ID: " + bill.getProductID() + "\t\tQuantity: "
+							+ bill.getQuantity() +"\t\tTime: "+bill.getTimestamp()+ "\t\tTotal Amount: " + bill.getTotalAmount());
+					billAmount+=bill.getTotalAmount();
+					}
+					System.out.println("Total Billing Amount : "+billAmount);
+				}
 				if (cartService.emptyCart(customerLoggedID))
 					System.out.println("Thank you for shopping with us");
 			} else
