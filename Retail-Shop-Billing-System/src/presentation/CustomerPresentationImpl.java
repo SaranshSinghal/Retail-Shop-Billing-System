@@ -54,6 +54,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			} else
 				System.out.println("Log In Failed!");
 			break;
+
 		case 2:
 			try {
 				System.out.print("Enter Customer ID: ");
@@ -80,14 +81,15 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				System.out.println(e.getMessage());
 			}
 			break;
+
 		case 3:
 			scanner.close();
 			System.out.println("||  Thank you for visiting  ||");
 			System.exit(0);
 			break;
+
 		default:
 			System.out.println("Invalid choice!");
-
 		}
 	}
 
@@ -110,25 +112,34 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				switch (choice) {
 				case 1:
 					List<Product> products = productService.getAllProducts();
-					for (Product product : products)
-						System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
-								+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
-								+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+					if (products.size() > 0)
+						for (Product product : products)
+							System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
+									+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
+									+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+					else
+						System.out.println("Sorry we are out of business!!");
 					break;
+
 				case 2:
 					System.out.print("Enter Product Id: ");
 					productID = scanner.nextInt();
 					System.out.print("Enter Quantity: ");
 					int quantity = scanner.nextInt();
-					Optional<Product> productOptional = productService.getProduct(productID);
-					if (productOptional.isPresent()) {
-						if (productOptional.get().getQuantity() < quantity)
-							System.out.println("Insufficient Stock!");
-						else if (cartService.addItemsInCart(productOptional.get(), quantity, customerLoggedID))
-							System.out.println("Product added to cart successfully!");
-					} else
-						System.out.println("Product with ID " + productID + " does not exist!");
+					if (quantity <= 0)
+						System.out.println("Quantity cannot be zero or negative!!");
+					else {
+						Optional<Product> productOptional = productService.getProduct(productID);
+						if (productOptional.isPresent()) {
+							if (productOptional.get().getQuantity() < quantity)
+								System.out.println("Insufficient Stock!");
+							else if (cartService.addItemsInCart(productOptional.get(), quantity, customerLoggedID))
+								System.out.println("Product added to cart successfully!");
+						} else
+							System.out.println("Product with ID " + productID + " does not exist!");
+					}
 					break;
+
 				case 3:
 					System.out.print("Enter Product Id: ");
 					productID = scanner.nextInt();
@@ -137,6 +148,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					else
 						System.out.println("Product with ID: " + productID + " not in cart!");
 					break;
+
 				case 4:
 					cartProducts = cartService.getCart(customerLoggedID);
 					if (cartProducts.size() > 0)
@@ -146,6 +158,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					else
 						System.out.println("The cart is empty!");
 					break;
+
 				case 5:
 					cartProducts = cartService.getCart(customerLoggedID);
 					if (cartProducts.size() > 0) {
@@ -159,6 +172,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					} else
 						System.out.println("The cart is empty!");
 					break;
+
 				case 6:
 					if (billService.generateBill(customerLoggedID)) {
 						List<Cart> displayCart = cartService.getCart(customerLoggedID);
@@ -170,6 +184,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					} else
 						System.out.println("Bill generation failed!");
 					break;
+
 				case 7:
 					System.out.print("Enter old password: ");
 					scanner.nextLine();
@@ -181,11 +196,13 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					else
 						System.out.println("Unsuccessful!");
 					break;
+
 				case 8:
 					scanner.close();
 					System.out.println("||  Thank you for visiting  ||");
 					System.exit(0);
 					break;
+
 				default:
 					System.out.println("Invalid choice!!");
 				}
