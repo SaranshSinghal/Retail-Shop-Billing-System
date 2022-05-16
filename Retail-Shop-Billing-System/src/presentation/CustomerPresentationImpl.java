@@ -103,7 +103,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			System.out.println("5. Empty Cart");
 			System.out.println("6. CheckOut");
 			System.out.println("7. Update Password");
-			System.out.println("8. Exit");
+			System.out.println("8. Logout");
 			System.out.print("Enter your choice: ");
 			try {
 				Scanner scanner = new Scanner(System.in);
@@ -200,7 +200,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				case 8:
 					scanner.close();
 					System.out.println("||  Thank you for visiting  ||");
-					System.exit(0);
+					primaryMenu();
 					break;
 
 				default:
