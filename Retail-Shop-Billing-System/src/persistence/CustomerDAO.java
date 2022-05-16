@@ -15,4 +15,6 @@ public interface CustomerDAO {
 
 	List<Customer> getAllCustomers();
 
+	boolean deleteCustomerByID(int csutomerID);
+
 }

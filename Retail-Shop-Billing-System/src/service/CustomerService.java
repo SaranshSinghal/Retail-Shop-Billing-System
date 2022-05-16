@@ -14,4 +14,6 @@ public interface CustomerService {
 
 	List<Customer> getAllCustomers();
 
+	boolean deleteCustomer(int customerID);
+
 }

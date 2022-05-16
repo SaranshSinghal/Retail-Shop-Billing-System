@@ -18,8 +18,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public Optional<Customer> fetchCustomerDetails(int customerID) {
 		Customer customer = null;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM Customer WHERE C_Id=?");
 			preparedStatement.setInt(1, customerID);
@@ -44,8 +44,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public boolean registerNewCustomer(Customer newCustomer) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("INSERT INTO Customer VALUES(?,?,?,?,?)");
 			preparedStatement.setInt(1, newCustomer.getCustomerID());
@@ -66,8 +66,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public boolean updateCustomerDetails(Customer customer) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM Customer WHERE C_Id=?");
 			preparedStatement.setInt(1, customer.getCustomerID());
@@ -94,8 +94,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public List<Customer> getAllCustomers() {
 		Statement statement = null;
 		List<Customer> customersList = new ArrayList<>();
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM Customer");
@@ -113,6 +113,24 @@ public class CustomerDAOImpl implements CustomerDAO {
 			e.printStackTrace();
 		}
 		return customersList;
+	}
+
+	@Override
+	public boolean deleteCustomerByID(int csutomerID) {
+		int rows = 0;
+		PreparedStatement preparedStatement = null;
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			preparedStatement = connection.prepareStatement("DELETE FROM CUSTOMER WHERE C_ID=?");
+			preparedStatement.setInt(1, csutomerID);
+			rows = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return rows > 0 ? true : false;
 	}
 
 }

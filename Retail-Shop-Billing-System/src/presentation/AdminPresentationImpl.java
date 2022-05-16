@@ -16,7 +16,6 @@ public class AdminPresentationImpl implements AdminPresentation {
 
 	private final String USERNAME = "team4";
 	private final String PASSWORD = "123456789";
-
 	private ProductService productService = new ProductServiceImpl();
 	private CustomerService customerService = new CustomerServiceImpl();
 
@@ -29,7 +28,8 @@ public class AdminPresentationImpl implements AdminPresentation {
 		System.out.println("4. Update product");
 		System.out.println("5. Search product by productID");
 		System.out.println("6. List All Customers");
-		System.out.println("7. Exit");
+		System.out.println("7. Delete Customer by customerID");
+		System.out.println("8. Exit");
 	}
 
 	@Override
@@ -45,6 +45,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
 							+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
 				break;
+
 			case 2:
 				Product newProduct = new Product();
 				System.out.print("Enter productID: ");
@@ -57,12 +58,18 @@ public class AdminPresentationImpl implements AdminPresentation {
 				System.out.print("Enter product price: ");
 				newProduct.setPrice(scanner.nextDouble());
 				System.out.print("Enter product quantity: ");
-				newProduct.setQuantity(scanner.nextInt());
-				if (productService.addProduct(newProduct))
-					System.out.println("Product added successfully");
-				else
-					System.out.println("Product was not added, please enter correct details!");
+				int quantity = scanner.nextInt();
+				if (quantity <= 0)
+					System.out.println("Quantity cannot be zero or negative");
+				else {
+					newProduct.setQuantity(quantity);
+					if (productService.addProduct(newProduct))
+						System.out.println("Product added successfully");
+					else
+						System.out.println("Product was not added, please enter correct details!");
+				}
 				break;
+
 			case 3:
 				System.out.print("Enter productID: ");
 				if (productService.deleteProduct(scanner.nextInt()))
@@ -70,6 +77,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 				else
 					System.out.println("Product deletion failed, no such product exists!");
 				break;
+
 			case 4:
 				System.out.print("Enter productID: ");
 				productID = scanner.nextInt();
@@ -82,16 +90,19 @@ public class AdminPresentationImpl implements AdminPresentation {
 						System.out.print("Enter updated price of the product: ");
 						optionalProduct.get().setPrice(scanner.nextDouble());
 						break;
+
 					case 2:
 						System.out.print("Enter updated quantity of the product: ");
 						optionalProduct.get().setQuantity(scanner.nextInt());
 						break;
+
 					case 3:
 						System.out.print("Enter new price of the product: ");
 						optionalProduct.get().setPrice(scanner.nextDouble());
 						System.out.print("Enter new quantity of the product: ");
 						optionalProduct.get().setQuantity(scanner.nextInt());
 						break;
+
 					default:
 						System.out.println("Invalid choice!");
 						break;
@@ -103,6 +114,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 				} else
 					System.out.println("Product with " + productID + " does not exist!");
 				break;
+
 			case 5:
 				System.out.print("Enter productID: ");
 				productID = scanner.nextInt();
@@ -115,6 +127,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 				} else
 					System.out.println("Product with " + productID + " does not exist!");
 				break;
+
 			case 6:
 				List<Customer> customers = customerService.getAllCustomers();
 				if (customers.size() > 0)
@@ -126,12 +139,25 @@ public class AdminPresentationImpl implements AdminPresentation {
 						System.out.println(
 								"\t\tAddress: " + customer.getAddress() + "\t\tPhone Number: " + customer.getPhoneNo());
 					}
+				else
+					System.out.println("No customers yet!!");
 				break;
+
 			case 7:
+				System.out.print("Enter Customer ID: ");
+				int customerID = scanner.nextInt();
+				if (customerService.deleteCustomer(customerID))
+					System.out.println("Customer deleted successfully!");
+				else
+					System.out.println("Customer with id" + customerID + "doesn't exist!!");
+				break;
+
+			case 8:
 				scanner.close();
 				System.out.println("||  Thank you for using Retail Management Services ||");
 				System.exit(0);
 				break;
+
 			default:
 				System.out.println("Invalid choice, please enter valid choice!");
 			}

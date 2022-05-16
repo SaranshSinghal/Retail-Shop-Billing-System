@@ -43,4 +43,12 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDAO.getAllCustomers();
 	}
 
+	@Override
+	public boolean deleteCustomer(int customerID) {
+		Optional<Customer> customerOptional = customerDAO.fetchCustomerDetails(customerID);
+		if (customerOptional.isPresent())
+			customerDAO.deleteCustomerByID(customerID);
+		return false;
+	}
+
 }
