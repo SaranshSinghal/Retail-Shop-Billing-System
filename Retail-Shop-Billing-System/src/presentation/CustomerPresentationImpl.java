@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import entity.Bill;
 import entity.Cart;
 import entity.Customer;
 import entity.Product;
@@ -96,8 +95,6 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 
 	@Override
 	public void secondaryMenu() {
-		
-		
 		while (true) {
 			System.out.println("\n1. List All Products");
 			System.out.println("2. Add Product to Cart");
@@ -140,21 +137,16 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					}
 					break;
 
-				
-
 				case 3:
 					cartProducts = cartService.getCart(customerLoggedID);
 					if (cartProducts.size() > 0) {
-						for (Cart cart : cartProducts) 
+						for (Cart cart : cartProducts)
 							System.out.println("Product ID: " + cart.getProductID() + "  Quantity: "
 									+ cart.getQuantity() + "  Total Amount: " + cart.getTotalAmount());
-					    cartFunctions();
-					    }
-					else
+						cartFunctions();
+					} else
 						System.out.println("The cart is empty!");
 					break;
-
-			
 
 				case 4:
 					System.out.print("Enter old password: ");
@@ -183,46 +175,52 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			}
 		}
 	}
+
 	@Override
 	public void cartFunctions() {
-		System.out.println("1:Delete Product from Cart\n"
-				+ "2:Checkout.\n"
-				+ "3:Delete Cart");
-		System.out.println("Enter Choice");
+		System.out.println("1. Delete Product from Cart\n2. Checkout.\n3. Delete Cart\n4. Return to Main Menu");
+		System.out.print("Enter Choice: ");
 		Scanner scanner = new Scanner(System.in);
 		int choice = scanner.nextInt();
-		switch (choice){
+		switch (choice) {
 		case 1:
-			
 			System.out.print("Enter Product Id: ");
 			int productID = scanner.nextInt();
 			if (cartService.deleteItemFromCart(productID, customerLoggedID))
 				System.out.println("Product deleted from cart successfully!");
 			else
 				System.out.println("Product with ID: " + productID + " not in cart!");
-			
 			break;
+
 		case 2:
 			if (billService.generateBill(customerLoggedID)) {
-				List<Bill> displayBill = billService.displayBill(customerLoggedID);
-				if(!displayBill.isEmpty()) {
-				double billAmount = 0;
-					for (Bill bill : displayBill) {
-					System.out.println("Product ID: " + bill.getProductID() + "\t\tQuantity: "
-							+ bill.getQuantity() +"\t\tTime: "+bill.getTimestamp()+ "\t\tTotal Amount: " + bill.getTotalAmount());
-					billAmount+=bill.getTotalAmount();
+				List<Cart> displayCart = cartService.getCart(customerLoggedID);
+				if (!displayCart.isEmpty()) {
+					double billAmount = 0;
+					for (Cart cart : displayCart) {
+						Product product = productService.getProduct(cart.getProductID()).get();
+						double taxAmount = 0;
+						if (product.getCategory().equals("cd"))
+							taxAmount = BillService.CD_TAX;
+						else if (product.getCategory().equals("cosmetics"))
+							taxAmount = BillService.COSMETICS_TAX;
+						else if (product.getCategory().equals("book"))
+							taxAmount = BillService.BOOKS_TAX;
+						double amount = cart.getTotalAmount();
+						System.out.println("Product ID: " + cart.getProductID() + "\t\tQuantity: " + cart.getQuantity()
+								+ "\t\tTax: " + taxAmount + "\t\tTotal Amount: " + (amount + taxAmount * amount));
+						billAmount += amount + taxAmount * amount;
 					}
-					System.out.println("Total Billing Amount : "+billAmount);
+					System.out.println("Total Billing Amount : " + billAmount);
 				}
 				if (cartService.emptyCart(customerLoggedID))
 					System.out.println("Thank you for shopping with us");
 			} else
 				System.out.println("Bill generation failed!");
 			break;
-			
+
 		case 3:
-			
-			List<Cart>cartProducts = cartService.getCart(customerLoggedID);
+			List<Cart> cartProducts = cartService.getCart(customerLoggedID);
 			if (cartProducts.size() > 0) {
 				for (Cart cart : cartProducts) {
 					Product product = productService.getProduct(cart.getProductID()).get();
@@ -233,10 +231,13 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					System.out.println("Cart deleted successfully!");
 			} else
 				System.out.println("The cart is empty!");
-			
+		case 4:
+			secondaryMenu();
+			break;
+
+		default:
+			System.out.println("Invalid Input!");
 		}
-			
-		
 	}
 
 }
