@@ -142,7 +142,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					if (cartProducts.size() > 0) {
 						for (Cart cart : cartProducts)
 							System.out.println("Product ID: " + cart.getProductID() + "  Quantity: "
-									+ cart.getQuantity() + "  Total Amount: " + cart.getTotalAmount());
+									+ cart.getQuantity() + "  Price: " + cart.getTotalAmount());
 						cartFunctions();
 					} else
 						System.out.println("The cart is empty!");
@@ -199,17 +199,18 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					double billAmount = 0;
 					for (Cart cart : displayCart) {
 						Product product = productService.getProduct(cart.getProductID()).get();
-						double taxAmount = 0;
+						double taxRate = 0;
 						if (product.getCategory().equals("cd"))
-							taxAmount = BillService.CD_TAX;
+							taxRate = BillService.CD_TAX;
 						else if (product.getCategory().equals("cosmetics"))
-							taxAmount = BillService.COSMETICS_TAX;
+							taxRate = BillService.COSMETICS_TAX;
 						else if (product.getCategory().equals("book"))
-							taxAmount = BillService.BOOKS_TAX;
+							taxRate = BillService.BOOKS_TAX;
 						double amount = cart.getTotalAmount();
+						Double taxAmount = taxRate*amount/100*cart.getQuantity();
 						System.out.println("Product ID: " + cart.getProductID() + "\t\tQuantity: " + cart.getQuantity()
-								+ "\t\tTax: " + taxAmount + "\t\tTotal Amount: " + (amount + taxAmount * amount));
-						billAmount += amount + taxAmount * amount;
+								+ "\t\tTax Rate: " + taxRate+"%"+"\t\tTax Amount: "+taxAmount + "\t\tTotal Amount: " + (amount + taxAmount));
+						billAmount += amount + taxAmount;
 					}
 					System.out.println("Total Billing Amount : " + billAmount);
 				}

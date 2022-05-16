@@ -26,13 +26,13 @@ public class BillServiceImpl implements BillService {
 			Optional<Product> productOptional = productDAO.getProduct(cart.getProductID());
 			Product product = productOptional.get();
 			if (product.getCategory().equalsIgnoreCase("cd")) {
-				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.CD_TAX;
+				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.CD_TAX/100;
 				cart.setTotalAmount(totalAmountAfterTax);
 			} else if (product.getCategory().equalsIgnoreCase("cosmetics")) {
-				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.COSMETICS_TAX;
+				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.COSMETICS_TAX/100;
 				cart.setTotalAmount(totalAmountAfterTax);
 			} else if (product.getCategory().equalsIgnoreCase("book")) {
-				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.BOOKS_TAX;
+				double totalAmountAfterTax = cart.getTotalAmount() + cart.getTotalAmount() * BillService.BOOKS_TAX/100;
 				cart.setTotalAmount(totalAmountAfterTax);
 			}
 		}
