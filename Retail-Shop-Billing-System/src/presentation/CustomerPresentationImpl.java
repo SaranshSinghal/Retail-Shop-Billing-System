@@ -187,7 +187,17 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				break;
 
 			case 2:
-				System.out.println("Total Bill Amount = " + billService.generateBill(customerLoggedID));
+				List<Cart> cartProducts=cartService.getCart(customerLoggedID);
+				double totalBillAmount=billService.generateBill(customerLoggedID);
+				for(Cart cart:cartProducts)
+				{
+					Product prod=productService.searchProduct(cart.getProductID()).get();
+					double taxRate=billService.getTaxRate(prod.getCategory());
+					double taxAmount=billService.getTaxAmount(prod.getCategory(), cart.getQuantity(),prod.getPrice());
+					double totalAmountWithTax=billService.totalAmountAfterTax(cart.getTotalAmount(), taxAmount);
+					System.out.println("Product ID: "+cart.getProductID()+"\t\tQuantity: "+cart.getQuantity()+"\t\tTotal Amount: "+cart.getTotalAmount()+"\t\tTax Rate: "+taxRate+"\t\tTax Amount: "+taxAmount+"\t\tNet Price:"+totalAmountWithTax);
+				}
+				System.out.println("Total Bill Amount = " + totalBillAmount);
 				System.out.println("Thank you for shopping with us");
 				break;
 

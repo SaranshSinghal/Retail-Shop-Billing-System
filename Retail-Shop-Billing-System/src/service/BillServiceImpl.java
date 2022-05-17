@@ -21,31 +21,12 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public double generateBill(int customerID) {
 		try {
-			double billAmount = 0, taxRate = 0, taxAmount;
+			double billAmount = 0,taxAmount=0;
 			List<Cart> cartProducts = cartDAO.fetchCart(customerID);
 			for (Cart cart : cartProducts) {
 				Product product = productDAO.getProduct(cart.getProductID()).get();
-				if (product.getCategory().equalsIgnoreCase("cd")) {
-					double totalAmountAfterTax
-							= cart.getTotalAmount() + cart.getTotalAmount() * BillService.CD_TAX / 100;
-					cart.setTotalAmount(totalAmountAfterTax);
-					taxRate = BillService.CD_TAX;
-				} else if (product.getCategory().equalsIgnoreCase("cosmetics")) {
-					double totalAmountAfterTax
-							= cart.getTotalAmount() + cart.getTotalAmount() * BillService.COSMETICS_TAX / 100;
-					cart.setTotalAmount(totalAmountAfterTax);
-					taxRate = BillService.COSMETICS_TAX;
-				} else if (product.getCategory().equalsIgnoreCase("book")) {
-					double totalAmountAfterTax
-							= cart.getTotalAmount() + cart.getTotalAmount() * BillService.BOOKS_TAX / 100;
-					cart.setTotalAmount(totalAmountAfterTax);
-					taxRate = BillService.BOOKS_TAX;
-				}
-				taxAmount = taxRate * cart.getTotalAmount() / 100 * cart.getQuantity();
+				taxAmount = getTaxAmount(product.getCategory(),1,cart.getTotalAmount());
 				billAmount += cart.getTotalAmount() + taxAmount;
-				System.out.println("Product ID: " + cart.getProductID() + "\t\tQuantity: " + cart.getQuantity()
-						+ "\t\tTax Rate: " + taxRate + "%" + "\t\tTax Amount: " + taxAmount + "\t\tTotal Amount: "
-						+ (cart.getTotalAmount() + taxAmount));
 			}
 			cartDAO.emptyCart(customerID);
 			billDAO.pushBill(customerID, cartProducts);
@@ -59,6 +40,30 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public List<Bill> displayBill(int customerID) {
 		return billDAO.fetchBill(customerID);
+	}
+
+	@Override
+	public double getTaxRate(String productCategory) {
+		double taxRate=0;
+		if (productCategory.equalsIgnoreCase("cd"))
+			taxRate = BillService.CD_TAX;
+		else if (productCategory.equalsIgnoreCase("cosmetics"))
+			taxRate = BillService.COSMETICS_TAX;
+		else if (productCategory.equalsIgnoreCase("book"))
+			taxRate = BillService.BOOKS_TAX;
+		return taxRate;
+	}
+
+	@Override
+	public double getTaxAmount(String productCategory,int quantity,double amount) {
+		
+		return (getTaxRate(productCategory)/100)*amount*quantity;
+	}
+
+	@Override
+	public double totalAmountAfterTax(double amount, double tax) {
+		
+		return amount+tax;
 	}
 
 }
