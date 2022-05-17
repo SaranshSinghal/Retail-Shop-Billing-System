@@ -24,10 +24,11 @@ public class Main {
 				System.out.print("Enter password: ");
 				scanner.nextLine();
 				String password = scanner.nextLine();
-				if (adminPresentation.validate(userName, password))
+				if (adminPresentation.validate(userName, password)) {
+					System.out.println("\nHello Admin!");
 					while (true)
 						adminPresentation.showMenu();
-				else
+				} else
 					System.out.println("\nInvalid username or password!");
 				break;
 

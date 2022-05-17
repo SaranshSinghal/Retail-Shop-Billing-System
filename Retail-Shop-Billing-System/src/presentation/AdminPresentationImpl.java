@@ -21,7 +21,6 @@ public class AdminPresentationImpl implements AdminPresentation {
 
 	@Override
 	public void showMenu() {
-		System.out.println("\nHello Admin!");
 		System.out.println("\n1. List All Products");
 		System.out.println("2. Add New Product");
 		System.out.println("3. Delete Product");
@@ -41,9 +40,10 @@ public class AdminPresentationImpl implements AdminPresentation {
 				System.out.println();
 				if (!productsList.isEmpty())
 					for (Product product : productsList)
-						System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
-								+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
-								+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+						System.out.println(
+								"Product ID: " + product.getProductID() + "\t\tProduct Name: " + product.getName()
+										+ "\t\tCategory: " + product.getCategory() + "\t\tQuantity Available: "
+										+ product.getQuantity() + "\t\tUnit Price: " + product.getPrice());
 				else
 					System.out.println("Inventory is empty!");
 				break;
@@ -126,8 +126,8 @@ public class AdminPresentationImpl implements AdminPresentation {
 				if (productopOptional.isPresent()) {
 					Product product = productopOptional.get();
 					System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
-							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
-							+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity Available: "
+							+ product.getQuantity() + "\t\tUnit Price: " + product.getPrice());
 				} else
 					System.out.println("Product with ID " + productID + " does not exist!");
 				break;

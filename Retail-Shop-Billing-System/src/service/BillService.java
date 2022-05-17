@@ -3,7 +3,6 @@ package service;
 import java.util.List;
 
 import entity.Bill;
-import entity.Cart;
 
 public interface BillService {
 
@@ -14,9 +13,9 @@ public interface BillService {
 	double generateBill(int customerID);
 
 	List<Bill> displayBill(int customerID);
-	
+
 	double getTaxRate(String productCategory);
-	double getTaxAmount(String productCategory,int quantity,double amount);
-	double totalAmountAfterTax(double amount,double tax);
+
+	double getTaxAmount(String productCategory, int quantity, double amount);
 
 }

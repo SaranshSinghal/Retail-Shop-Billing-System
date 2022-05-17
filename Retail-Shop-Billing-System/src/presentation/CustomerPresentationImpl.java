@@ -104,9 +104,10 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 					System.out.println();
 					if (products.size() > 0)
 						for (Product product : products)
-							System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
-									+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
-									+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+							System.out.println(
+									"Product ID: " + product.getProductID() + "\t\tProduct Name: " + product.getName()
+											+ "\t\tCategory: " + product.getCategory() + "\t\tQuantity Available: "
+											+ product.getQuantity() + "\t\tUnit Price: " + product.getPrice());
 					else
 						System.out.println("Sorry we are out of business!!");
 					break;
@@ -187,18 +188,17 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				break;
 
 			case 2:
-				List<Cart> cartProducts=cartService.getCart(customerLoggedID);
-				double totalBillAmount=billService.generateBill(customerLoggedID);
-				for(Cart cart:cartProducts)
-				{
-					Product prod=productService.searchProduct(cart.getProductID()).get();
-					double taxRate=billService.getTaxRate(prod.getCategory());
-					double taxAmount=billService.getTaxAmount(prod.getCategory(), cart.getQuantity(),prod.getPrice());
-					double totalAmountWithTax=billService.totalAmountAfterTax(cart.getTotalAmount(), taxAmount);
-					System.out.println("Product ID: "+cart.getProductID()+"\t\tQuantity: "+cart.getQuantity()+"\t\tTotal Amount: "+cart.getTotalAmount()+"\t\tTax Rate: "+taxRate+"\t\tTax Amount: "+taxAmount+"\t\tNet Price:"+totalAmountWithTax);
+				for (Cart cart : cartService.getCart(customerLoggedID)) {
+					Product product = productService.searchProduct(cart.getProductID()).get();
+					double taxAmount
+							= billService.getTaxAmount(product.getCategory(), cart.getQuantity(), product.getPrice());
+					System.out.println("Product ID: " + cart.getProductID() + "\t\tQuantity: " + cart.getQuantity()
+							+ "\t\tTotal Amount: " + cart.getTotalAmount() + "\t\tTax Rate: "
+							+ billService.getTaxRate(product.getCategory()) + "\t\tTax Amount: " + taxAmount
+							+ "\t\tNet Price:" + (cart.getTotalAmount() + taxAmount));
 				}
-				System.out.println("Total Bill Amount = " + totalBillAmount);
-				System.out.println("Thank you for shopping with us");
+				System.out.println("Total Bill Amount = " + billService.generateBill(customerLoggedID));
+				System.out.println("\nThank you for shopping with us");
 				break;
 
 			case 3:
