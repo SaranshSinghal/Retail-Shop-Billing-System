@@ -5,6 +5,7 @@ public interface CustomerPresentation {
 	void primaryMenu();
 
 	void secondaryMenu();
-	void cartFunctions();
+
+	void cartMenu();
 
 }

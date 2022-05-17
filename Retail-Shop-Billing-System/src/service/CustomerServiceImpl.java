@@ -21,8 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public boolean registerCustomer(Customer customer) {
-		Optional<Customer> customerOptional = customerDAO.fetchCustomerDetails(customer.getCustomerID());
-		if (!customerOptional.isPresent())
+		if (!customerDAO.fetchCustomerDetails(customer.getCustomerID()).isPresent())
 			return customerDAO.registerNewCustomer(customer);
 		return false;
 	}
@@ -44,9 +43,13 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	public Optional<Customer> searchCustomer(int customerID) {
+		return customerDAO.fetchCustomerDetails(customerID);
+	}
+
+	@Override
 	public boolean deleteCustomer(int customerID) {
-		Optional<Customer> customerOptional = customerDAO.fetchCustomerDetails(customerID);
-		if (customerOptional.isPresent())
+		if (customerDAO.fetchCustomerDetails(customerID).isPresent())
 			customerDAO.deleteCustomerByID(customerID);
 		return false;
 	}

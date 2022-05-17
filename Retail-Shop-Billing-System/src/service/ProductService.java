@@ -7,7 +7,7 @@ import entity.Product;
 
 public interface ProductService {
 
-	Optional<Product> getProduct(int productID);
+	Optional<Product> searchProduct(int productID);
 
 	List<Product> getAllProducts();
 
@@ -16,5 +16,7 @@ public interface ProductService {
 	boolean updateProduct(Product product);
 
 	boolean deleteProduct(int productID);
+
+	boolean updateProductsQuantity(int customerID);
 
 }

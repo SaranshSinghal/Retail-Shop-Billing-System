@@ -23,32 +23,34 @@ public class AdminPresentationImpl implements AdminPresentation {
 	public void showMenu() {
 		System.out.println("\nHello Admin!");
 		System.out.println("\n1. List All Products");
-		System.out.println("2. Add new Product");
-		System.out.println("3. Delete product");
-		System.out.println("4. Update product");
-		System.out.println("5. Search product by productID");
+		System.out.println("2. Add New Product");
+		System.out.println("3. Delete Product");
+		System.out.println("4. Update Product");
+		System.out.println("5. Search Product");
 		System.out.println("6. List All Customers");
-		System.out.println("7. Delete Customer by customerID");
-		System.out.println("8. Exit");
-	}
-
-	@Override
-	public void performMenu(int choice) {
-		Scanner scanner = new Scanner(System.in);
-		int productID = 0;
+		System.out.println("7. Search Customer");
+		System.out.println("8. Delete Customer");
+		System.out.println("9. Logout ");
 		try {
-			switch (choice) {
+			Scanner scanner = new Scanner(System.in);
+			int productID = 0, customerID = 0;
+			System.out.print("Enter your choice: ");
+			switch (scanner.nextInt()) {
 			case 1:
 				List<Product> productsList = productService.getAllProducts();
-				for (Product product : productsList)
-					System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
-							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
-							+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+				System.out.println();
+				if (!productsList.isEmpty())
+					for (Product product : productsList)
+						System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
+								+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
+								+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
+				else
+					System.out.println("Inventory is empty!");
 				break;
 
 			case 2:
 				Product newProduct = new Product();
-				System.out.print("Enter productID: ");
+				System.out.print("\nEnter productID: ");
 				newProduct.setProductID(scanner.nextInt());
 				System.out.print("Enter product name: ");
 				scanner.nextLine();
@@ -60,76 +62,79 @@ public class AdminPresentationImpl implements AdminPresentation {
 				System.out.print("Enter product quantity: ");
 				int quantity = scanner.nextInt();
 				if (quantity <= 0)
-					System.out.println("Quantity cannot be zero or negative");
+					System.out.println("\nQuantity cannot be zero or negative");
 				else {
 					newProduct.setQuantity(quantity);
 					if (productService.addProduct(newProduct))
-						System.out.println("Product added successfully");
+						System.out.println("\nProduct added successfully");
 					else
-						System.out.println("Product was not added, please enter correct details!");
+						System.out.println("\nProduct was not added, please enter correct details!");
 				}
 				break;
 
 			case 3:
-				System.out.print("Enter productID: ");
-				if (productService.deleteProduct(scanner.nextInt()))
-					System.out.println("Product deleted successfully");
+				System.out.print("\nEnter productID: ");
+				productID = scanner.nextInt();
+				if (productService.deleteProduct(productID))
+					System.out.println("\nProduct deleted successfully");
 				else
-					System.out.println("Product deletion failed, no such product exists!");
+					System.out.println("\nProduct with ID " + productID + " does not exist!");
 				break;
 
 			case 4:
-				System.out.print("Enter productID: ");
+				System.out.print("\nEnter productID: ");
 				productID = scanner.nextInt();
-				Optional<Product> optionalProduct = productService.getProduct(productID);
+				Optional<Product> optionalProduct = productService.searchProduct(productID);
 				if (optionalProduct.isPresent()) {
-					System.out.print("1. Price\n2. Quantity\n3. Both\nSelect field to update: ");
+					System.out.print("\n1. Price\n2. Quantity\n3. Both\nSelect field to update: ");
 					int updateChoice = scanner.nextInt();
 					switch (updateChoice) {
 					case 1:
-						System.out.print("Enter updated price of the product: ");
+						System.out.print("\nEnter updated price of the product: ");
 						optionalProduct.get().setPrice(scanner.nextDouble());
 						break;
 
 					case 2:
-						System.out.print("Enter updated quantity of the product: ");
+						System.out.print("\nEnter updated quantity of the product: ");
 						optionalProduct.get().setQuantity(scanner.nextInt());
 						break;
 
 					case 3:
-						System.out.print("Enter new price of the product: ");
+						System.out.print("\nEnter new price of the product: ");
 						optionalProduct.get().setPrice(scanner.nextDouble());
 						System.out.print("Enter new quantity of the product: ");
 						optionalProduct.get().setQuantity(scanner.nextInt());
 						break;
 
 					default:
-						System.out.println("Invalid choice!");
+						System.out.println("\nInvalid choice!");
 						break;
 					}
 					if (updateChoice >= 1 && updateChoice <= 3 && productService.updateProduct(optionalProduct.get()))
-						System.out.println("Product updated successfully");
+						System.out.println("\nProduct updated successfully");
 					else
-						System.out.println("Product updation failed!");
+						System.out.println("\nProduct updation failed!");
 				} else
-					System.out.println("Product with " + productID + " does not exist!");
+					System.out.println("\nProduct with ID " + productID + " does not exist!");
 				break;
 
 			case 5:
-				System.out.print("Enter productID: ");
+				System.out.print("\nEnter productID: ");
 				productID = scanner.nextInt();
-				Optional<Product> productopOptional = productService.getProduct(productID);
+				Optional<Product> productopOptional = productService.searchProduct(productID);
+				System.out.println();
 				if (productopOptional.isPresent()) {
 					Product product = productopOptional.get();
 					System.out.println("Product ID: " + product.getProductID() + "\t\tProduct Name: "
 							+ product.getName() + "\t\tCategory: " + product.getCategory() + "\t\tQuantity: "
 							+ product.getQuantity() + "\t\tPrice: " + product.getPrice());
 				} else
-					System.out.println("Product with " + productID + " does not exist!");
+					System.out.println("Product with ID " + productID + " does not exist!");
 				break;
 
 			case 6:
 				List<Customer> customers = customerService.getAllCustomers();
+				System.out.println();
 				if (customers.size() > 0)
 					for (Customer customer : customers) {
 						System.out.print("Customer ID: " + customer.getCustomerID() + "\t\tName: " + customer.getName()
@@ -144,25 +149,42 @@ public class AdminPresentationImpl implements AdminPresentation {
 				break;
 
 			case 7:
-				System.out.print("Enter Customer ID: ");
-				int customerID = scanner.nextInt();
-				if (customerService.deleteCustomer(customerID))
-					System.out.println("Customer deleted successfully!");
-				else
-					System.out.println("Customer with id" + customerID + "doesn't exist!!");
+				System.out.print("\nEnter Customer ID: ");
+				customerID = scanner.nextInt();
+				Optional<Customer> customerOptional = customerService.searchCustomer(customerID);
+				System.out.println();
+				if (customerOptional.isPresent()) {
+					Customer customer = customerOptional.get();
+					System.out.print("Customer ID: " + customer.getCustomerID() + "\t\tName: " + customer.getName()
+							+ "\t\tPassword: ");
+					for (int i = 1; i <= customer.getPassword().length(); i++)
+						System.out.print("*");
+					System.out.println(
+							"\t\tAddress: " + customer.getAddress() + "\t\tPhone Number: " + customer.getPhoneNo());
+				} else
+					System.out.println("Customer with ID " + customerID + " does not exist!!");
 				break;
 
 			case 8:
+				System.out.print("\nEnter Customer ID: ");
+				customerID = scanner.nextInt();
+				if (customerService.deleteCustomer(customerID))
+					System.out.println("\nCustomer deleted successfully!");
+				else
+					System.out.println("\nCustomer with ID " + customerID + "doesn't exist!!");
+				break;
+
+			case 9:
 				scanner.close();
-				System.out.println("||  Thank you for using Retail Management Services ||");
+				System.out.println("\n||  Thank you for using Retail Management Services ||");
 				System.exit(0);
 				break;
 
 			default:
-				System.out.println("Invalid choice, please enter valid choice!");
+				System.out.println("\nInvalid choice!!");
 			}
 		} catch (InputMismatchException ex) {
-			System.out.println("Please Enter valid input!");
+			System.out.println("\nPlease enter valid input!");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -170,9 +192,7 @@ public class AdminPresentationImpl implements AdminPresentation {
 
 	@Override
 	public boolean validate(String userName, String password) {
-		if (userName.equals(USERNAME) && password.equals(PASSWORD))
-			return true;
-		return false;
+		return userName.equals(USERNAME) && password.equals(PASSWORD);
 	}
 
 }

@@ -24,26 +24,25 @@ public class Main {
 				System.out.print("Enter password: ");
 				scanner.nextLine();
 				String password = scanner.nextLine();
-				if (adminPresentation.validate(userName, password)) {
-					while (true) {
+				if (adminPresentation.validate(userName, password))
+					while (true)
 						adminPresentation.showMenu();
-						System.out.print("Enter your choice: ");
-						int choice2 = scanner.nextInt();
-						adminPresentation.performMenu(choice2);
-					}
-				} else
-					System.out.println("Invalid username or password!");
+				else
+					System.out.println("\nInvalid username or password!");
 				break;
+
 			case 2:
 				customerPresentationImpl.primaryMenu();
 				break;
+
 			case 3:
 				scanner.close();
-				System.out.println("||  THANK YOU  ||");
+				System.out.println("\n||  THANK YOU  ||");
 				System.exit(0);
 				break;
+
 			default:
-				System.out.println("Invalid choice!!");
+				System.out.println("\nInvalid choice!!");
 				break;
 			}
 		}

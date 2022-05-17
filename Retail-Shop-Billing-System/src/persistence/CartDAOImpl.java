@@ -17,8 +17,8 @@ public class CartDAOImpl implements CartDAO {
 	public boolean addItemInCart(Cart cart, int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("INSERT INTO Cart VALUES(default,?,?,?,?)");
 			preparedStatement.setInt(1, customerID);
@@ -38,8 +38,8 @@ public class CartDAOImpl implements CartDAO {
 	public List<Cart> fetchCart(int customerID) {
 		List<Cart> cartList = new ArrayList<>();
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM CART WHERE C_ID=?");
 			preparedStatement.setInt(1, customerID);
@@ -63,8 +63,8 @@ public class CartDAOImpl implements CartDAO {
 	public boolean emptyCart(int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("DELETE FROM Cart WHERE C_Id=?");
 			preparedStatement.setInt(1, customerID);
@@ -81,8 +81,8 @@ public class CartDAOImpl implements CartDAO {
 	public Optional<Cart> searchProductInCart(int productID, int customerID) {
 		PreparedStatement preparedStatement = null;
 		Cart cart = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM CART WHERE P_Id=? AND C_Id=?");
 			preparedStatement.setInt(1, productID);
@@ -107,11 +107,11 @@ public class CartDAOImpl implements CartDAO {
 	public boolean updateItemInCart(Cart cart, int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			preparedStatement = connection
-					.prepareStatement("UPDATE CART SET Quantity=?, TotalAmount=? WHERE P_Id=? AND C_Id=?");
+			preparedStatement
+					= connection.prepareStatement("UPDATE CART SET Quantity=?, TotalAmount=? WHERE P_Id=? AND C_Id=?");
 			preparedStatement.setInt(1, cart.getQuantity());
 			preparedStatement.setDouble(2, cart.getTotalAmount());
 			preparedStatement.setInt(3, cart.getProductID());
@@ -129,8 +129,8 @@ public class CartDAOImpl implements CartDAO {
 	public boolean deleteItemFromCart(int productID, int customerID) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("DELETE FROM CART WHERE P_Id=? AND C_Id=?");
 			preparedStatement.setInt(1, productID);

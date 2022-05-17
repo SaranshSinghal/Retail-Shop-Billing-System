@@ -10,7 +10,7 @@ public interface BillService {
 	double COSMETICS_TAX = 12;
 	double BOOKS_TAX = 0;
 
-	boolean generateBill(int customerID);
+	double generateBill(int customerID);
 
 	List<Bill> displayBill(int customerID);
 

@@ -11,6 +11,7 @@ import persistence.ProductDAO;
 import persistence.ProductDAOImpl;
 
 public class CartServiceImpl implements CartService {
+
 	private CartDAO cartDAO = new CartDAOImpl();
 	private ProductDAO productDAO = new ProductDAOImpl();
 
@@ -44,8 +45,7 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public boolean deleteItemFromCart(int productID, int customerID) {
-		Optional<Cart> cartOptional = cartDAO.searchProductInCart(productID, customerID);
-		if (cartOptional.isPresent())
+		if (cartDAO.searchProductInCart(productID, customerID).isPresent())
 			return cartDAO.deleteItemFromCart(productID, customerID);
 		return false;
 	}

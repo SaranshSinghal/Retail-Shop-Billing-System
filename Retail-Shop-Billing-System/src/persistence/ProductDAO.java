@@ -16,4 +16,5 @@ public interface ProductDAO {
 	Optional<Product> getProduct(int productID);
 
 	List<Product> getAllProducts();
+
 }

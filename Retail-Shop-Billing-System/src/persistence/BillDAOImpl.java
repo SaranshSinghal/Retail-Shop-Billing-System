@@ -18,8 +18,8 @@ public class BillDAOImpl implements BillDAO {
 	public boolean pushBill(int customerID, List<Cart> cartList) {
 		int rows = 0;
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			for (Cart cart : cartList) {
 				preparedStatement = connection.prepareStatement("INSERT INTO BILL VALUES(DEFAULT,?,?,?,?,?)");
@@ -42,8 +42,8 @@ public class BillDAOImpl implements BillDAO {
 	public List<Bill> fetchBill(int customerID) {
 		List<Bill> billList = new ArrayList<>();
 		PreparedStatement preparedStatement = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root",
-				"wiley");) {
+		try (Connection connection
+				= DriverManager.getConnection("jdbc:mysql://localhost:3306/retailshop", "root", "wiley");) {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			preparedStatement = connection.prepareStatement("SELECT * FROM BILL WHERE C_ID=?");
 			preparedStatement.setInt(1, customerID);
