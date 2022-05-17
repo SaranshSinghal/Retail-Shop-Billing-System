@@ -37,7 +37,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 			String password = "";
 			switch (scanner.nextInt()) {
 			case 1:
-				System.out.print("Enter Your ID: ");
+				System.out.print("\nEnter Your ID: ");
 				customerID = scanner.nextInt();
 				System.out.print("Enter Your Password: ");
 				scanner.nextLine();
@@ -172,7 +172,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 
 	@Override
 	public void cartMenu() {
-		System.out.println("\n1. Delete Product from Cart\n2. Checkout.\n3. Empty Cart\n4. Return to Main Menu");
+		System.out.println("\n1. Delete Product from Cart\n2. Checkout\n3. Empty Cart\n4. Return to Main Menu");
 		System.out.print("Enter Choice: ");
 		try {
 			Scanner scanner = new Scanner(System.in);
@@ -187,7 +187,7 @@ public class CustomerPresentationImpl implements CustomerPresentation {
 				break;
 
 			case 2:
-				System.out.println(billService.generateBill(customerLoggedID));
+				System.out.println("Total Bill Amount = " + billService.generateBill(customerLoggedID));
 				System.out.println("Thank you for shopping with us");
 				break;
 
